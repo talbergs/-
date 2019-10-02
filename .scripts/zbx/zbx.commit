@@ -1,0 +1,86 @@
+#!/bin/bash
+#| This programm parses modified and added files from base
+#| Stubs a commit message with spell checker
+#| vim is rised with split preview of diff
+#| vim has normalmode bindings:
+#|      - "q" bail out and
+#|      - "<cr>" save command and execute
+#| {--fzf} select explicit files [press <tab> to toggle selection] to commit (flags are made from the selection)
+#| {--branch <str>} ignore working path and use this branch name
+[[ $1 == -h ]] && grep '^#|' $0 | sed 's/^#//' && exit
+
+jirauser_at='[~talbergs]'
+
+base=$(zbx.resolve.base);if [ $? -ne 0 ];then echo "$base";exit 1; fi
+cd $base
+
+while [[ $# > 0 ]];do case $1 in
+--fzf) fzf=--fzf;;
+--branch) branch=$2;shift;;
+esac;shift;done
+
+files=$(zbx.files $fzf);[ $? -ne 0 ] && echo "Interrupted fzf" && exit 1
+[ -z $files ] && echo "No files to commit." && exit
+flags=$(echo "$files" | zbx.flags)
+
+cmdfile="__$(basename $0).sh"
+cmd="svn commit -m '$flags [${branch-$(zbx.resolve.branch)}] '"
+# TODO diff preview should contain only files that are selected for the commit
+patch=$(zbx.diff -q)
+
+rm -f $cmdfile
+$EDITOR - \
+    -c ":e $patch" \
+    -c ":vsp $cmdfile" \
+    -c ":normal S${cmd}" \
+    -c ":set spell" \
+    -c ":set wrap" \
+    -c ":nnoremap q :qall!<cr>" \
+    -c ":nnoremap <cr> :wqall!<cr>" \
+    -c ":echom '<enter> to write, <q> to exit'"
+
+[ ! -f $cmdfile ] && echo "Bailed out." && exit;
+echo "$files" >> $cmdfile
+cat $cmdfile | sed -e 's/$/ \\/' -e '$s/ \\$//' > $cmdfile'1'
+mv $cmdfile'1' $cmdfile
+
+printf '\n\n%s\n\n' "$files"
+
+echo "$(tput bold)$(cat $cmdfile)$(tput sgr 0)"
+read -p "Are you sure to execute this?"
+cap="$(source $cmdfile)"
+rev=$(echo "$cap" | grep revis | awk '{print $3}' | sed 's/\.//')
+if [ -e $rev ];then
+    cat $cmdfile | xclip -selection clipboard
+
+    tput sgr 7
+    echo "$cap"
+    tput sgr 0
+    echo "this is clipped:"
+    echo $cmdfile
+    exit 1
+else
+    printf $(tput bold)'---\n\n%s\n\n---'$(tput sgr 0) "$cap"
+fi
+
+svn up # this wouldn't hurt..
+
+subissue="$jirauser_at RESOLVED in r${rev}"
+subissue2="$jirauser_at CLOSED with minor fix in r${rev}"
+subissue3="$jirauser_at IMPLEMENTED in r${rev}"
+subissue4="FIXED in development branch svn://svn.zabbix.com/$(zbx.resolve.base -L)"
+
+printf $(tput bold)'Choose your clip:\n1) %s\n2) %s\n3) %s\n*) %s\n'$(tput sgr 0) \
+    "$subissue" "$subissue2" "$subissue3" "$subissue4"
+
+read -p "Which line you will clipboard? : " linenr
+if [[ $linenr = '1' ]];then
+    echo -n "$subissue" | xclip -selection clipboard
+elif [[ $linenr = '2' ]];then
+    echo -n "$subissue2" | xclip -selection clipboard
+elif [[ $linenr = '3' ]];then
+    echo -n "$subissue3" | xclip -selection clipboard
+else
+    echo -n "$subissue4" | xclip -selection clipboard
+fi
+

@@ -1,0 +1,43 @@
+#!/bin/bash
+#| Prints all zbx.* files as text.
+#| Example usage:
+#| $ zbx.scripts_to_text --format cw | xclip -selection clipboard
+#| {--format}
+#|      Possible values: confluence-wiki (alias:cw), markdown (alias:md) (default)
+[[ $1 == -h ]] && grep '^#|' $0 | sed 's/^#//' && exit
+format=md
+while [[ "$#" > 0 ]]; do case $1 in
+    -f|--format)
+        case $2 in
+            md|markdown)format=md;shift;;
+            cw|confluence-wiki)format=cw;shift;;
+            *) echo "unknown param value $1: ${2:-undefined}"; exit 1;;
+        esac
+    ;;
+    *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
+function filterZBX() {
+    while read z; do
+        if [[ $z = zbx\.* ]]; then
+            echo $(which $z)
+        fi
+    done
+}
+
+preface="These scripts I use to automate my workflow. They are not great, but hopefully they will inspire somebody to automate ALL THE THINGS. Most of them should accept -h parameter for reminder on usage."
+function cw() {
+    echo "h5. $preface";
+    while read z; do
+        printf '{_code:title=%s|language=bash|collapse=true}\n%s\n{_code}\n\n' "$(basename $z)" "$(cat $z)" | sed 's/_code/code/'
+    done
+}
+
+function md() {
+    echo "###. $preface";
+    while read z; do
+        printf '## %s\n\n```bash\n%s\n````\n\n' "$(basename $z)" "$(cat $z)"
+    done
+}
+
+compgen -c | filterZBX | sort --unique | $format

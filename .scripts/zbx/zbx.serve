@@ -1,0 +1,15 @@
+#!/bin/bash
+[[ $1 == -h ]] && echo "
+    | This program creates i3 workspace at id 7
+    | determines version from php constant
+" && exit
+
+exec_srv="exec $TERMINAL -e \"nvim -c ':term $(zbx.resolve.prefix)/sbin/zabbix_server' -c ':normal a'\""
+exec_agentd="exec $TERMINAL -e \"nvim -c ':term $(zbx.resolve.prefix)/sbin/zabbix_agentd' -c ':normal a'\""
+exec_agentd_log="exec $TERMINAL -e \"nvim -c ':term tail -F $(zbx.resolve.prefix)/zabbix_agentd.log' -c ':normal a'\""
+exec_srv_log="exec $TERMINAL -e \"nvim -c ':term tail -F $(zbx.resolve.prefix)/zabbix_server.log' -c ':normal a'\""
+exec_web="exec $TRUEBROWSER --app=\"$(zbx.resolve.web)\""
+exec_proj="exec $TERMINAL -e \"nvim $(zbx.resolve.base)/frontends/php/\""
+
+# TODO maybe better would be to maintain and spawn tmux sessoions
+i3-msg "workspace $(zbx.resolve.branch);$exec_srv;$exec_agentd;$exec_srv_log;$exec_agentd_log;$exec_web;$exec_proj"

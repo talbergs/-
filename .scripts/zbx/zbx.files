@@ -1,0 +1,28 @@
+#!/bin/bash
+#| Returns a list of absolute file paths to be commited (M and A tagged svn status files).
+#| {--cwd /some/path} will run from that path.
+#| {--fzf} allows to select explicit files [press <tab> to toggle selection]
+#| {--cmd} will append " \" to output lines (except last line)
+[[ $1 == -h ]] && grep '^#|' $0 | sed 's/^#//' && exit
+
+base=$(zbx.resolve.base)
+cwd=$base
+fzf=cat
+cmd=cat
+
+while [[ $# > 0 ]];do case $1 in
+--fzf) fzf="fzf -m";;
+--cmd) cmd='sed -e "s/$/ \\\\/" -e "\$s/ \\\\$//"';;
+--cwd) cwd=$2;shift;;
+esac;shift;done
+
+cd $cwd
+
+svn status \
+    | sed -e 's/^[?].*//' \
+    | sed -e 's/^\s.*//' \
+    | sed -e 's/\+//' \
+    | sed -e '/^\s*$/d' \
+    | awk '{print "'"$base/"'"$2}' \
+    | $fzf \
+    | eval $cmd

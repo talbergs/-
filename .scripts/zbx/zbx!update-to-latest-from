@@ -1,0 +1,8 @@
+#!/bin/bash
+preval() {
+    echo "$(tput bold)${1}$(tput sgr 0)"
+    read -p "Sure to run this line?"
+    eval "$1"
+}
+
+echo todo

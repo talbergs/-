@@ -1,0 +1,37 @@
+#!/bin/bash
+## It will checkout to a ticket feature branch, if no such branch exists
+## it offers to create such feature brach.
+##
+## It then checkouts you onto branch, and builds everything once + creates DB (if ticket binaries found, nothing will build).
+## It does the same process for ancestor branch (which will be in separeted worktree), but configures that to use the same
+## vim session and to point to database of this working branch.
+##
+## There must be ~/.zbx.env file set up.
+[[ $1 == -h ]] && zbx.-h "$0" && exit
+zbx.env --exists && source $(zbx.env) || exit 1
+
+git fetch $zbx_remote_name --prune --prune-tags
+
+bname=feature/$1
+
+if [[ ! -z $(git branch --all --list "*/$bname") ]];then
+    # TODO check for uncommited etc..
+    # offer stash..
+    git checkout $bname
+else
+    header="choose the ancestor for ${1}"
+    release=$(git branch --all --list "*/release/*" | fzf --height 10 --header "${header}")
+    [[ -z $release ]] && exit;
+
+    # TODO auto push empty branch
+    git checkout -b $bname --track $release
+fi
+
+
+build_prefix=$(zbx.resolve --build-prefix)
+
+if [[ ! -e $build_prefix ]];then
+    zbx.make
+    zbx.config
+fi
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -n $(cat ./frontends/php/include/defines.inc.php \
+    | grep ZABBIX_VERSION \
+    | awk -F\' '{print $4}')

@@ -1,0 +1,181 @@
+#!/bin/bash
+## Opinionated Arch installation:
+## Assumes UEFI, Latvia, Intel
+## Creates:
+## * sway desktop
+## * swapfile 16G
+## * fish shell
+## * $HOME/tmp another RAM folder
+##
+## HOWTO:~# curl bit.ly/arhc.sh -o a && bash $_
+## HOWNOTTO:~# bash <(curl bit.ly/arhc.sh)
+##
+## _PACSTRAP_ section {{{1
+# Welcome {{{2
+if (( $(ping -c1 -W1 archlinux.org | wc -l) < 1 )) ; then
+    echo
+    echo "$(tput bold)HAVE A CONNECTION! Bye!$(tput sgr0)"
+    exit 1
+else
+    echo
+    echo "$(tput bold)WELCOME!$(tput sgr0)"
+    echo
+fi
+set +e
+
+# Form {{{2
+lsblk -Sp
+read -r -p '>> Enter drive: (default: /dev/sda):' DRIVE
+DRIVE=${DRIVE:-/dev/sda}
+PARTBOOT=$DRIVE\1
+PARTROOT=$DRIVE\2
+read -r -p ">> (1/5) Enter username: " USERNAME
+read -r -p ">> (2/5) Enter hostname: " HOSTNAME
+echo "$(tput bold)Caution! Following prompts has no confirmation and no echo.$(tput sgr0)"
+read -s -r -p ">> (3/5) Enter 'root' password: " ROOTPW;echo
+read -s -r -p ">> (4/5) Enter '$USERNAME' password: " USERPW;echo
+read -s -r -p ">> (5/5) Enter disk encryption passphrase: " CRYPTPW;echo
+echo
+echo "$(tput bold)THATS IT! come back in approx 15 minutes$(tput sgr0)"
+echo
+
+# Rank mirrors if needed {{{2
+(( $(cat /etc/pacman.d/mirrorlist | wc -l) > 10 )) && (
+echo ">> Ranking top 5 fastest mirrors..." 
+which rankmirrors &>null || pacman -Sy --noconfirm --needed pacman-contrib &>null
+curl -s "https://www.archlinux.org/mirrorlist/?protocol=https&use_mirror_status=on&country=LV&country=GB&country=DE" \
+    | sed 's/^#//' | sed '/^#/d' \
+    | rankmirrors -n 5 - > /etc/pacman.d/mirrorlist
+)
+
+# Make partitions {{{2
+umount -R /mnt 2> /dev/null # just in case
+sgdisk --zap-all $DRIVE
+sgdisk --clear \
+       --new=1:0:+550MiB --typecode=1:ef00 --change-name=1:EFI \
+       --new=2:0:0       --typecode=2:8300 --change-name=2:cryptroot \
+       $DRIVE
+
+# Make filesystem and crypt {{{2
+mkfs.vfat $PARTBOOT
+echo -n $CRYPTPW | cryptsetup -q luksFormat $PARTROOT
+echo -n $CRYPTPW | cryptsetup open $PARTROOT cryptroot
+# NOTE: f2fs bechmarks very well on SSD
+# NOTE: before using f2fs do this: pacman f2fs-tools btrfs-progs
+mkfs.ext4 /dev/mapper/cryptroot
+
+# Mount {{{2
+mount /dev/mapper/cryptroot /mnt
+mkdir /mnt/boot
+mount $PARTBOOT /mnt/boot
+
+# Pacstrap {{{2
+pacstrap /mnt base base-devel xorg-server-xwayland sway fish termite \
+  ttf-font-awesome waybar rofi \
+  htop tree \
+  mpv mpd youtube-dl \
+  neovim wl-clipboard nodejs npm the_silver_searcher fzf \
+  alsa-utils pulseaudio pavucontrol pulsemixer \
+  chromium docker openssh
+
+# Fstab {{{2
+genfstab -U -p /mnt > /mnt/etc/fstab
+
+# ArchRoot {{{2
+unset -v A
+sed "/_PAC${A}STRAP_/,/_CH${A}ROOT_/d" $0 > /mnt/etc/in-arch-chroot.sh
+sed -i "s#PARTBOOT_#PARTBOOT=\"$PARTBOOT\"#" /mnt/etc/in-arch-chroot.sh
+sed -i "s#PARTROOT_#PARTROOT=\"$PARTROOT\"#" /mnt/etc/in-arch-chroot.sh
+sed -i "s#HOSTNAME_#HOSTNAME=\"$HOSTNAME\"#" /mnt/etc/in-arch-chroot.sh
+sed -i "s#USERNAME_#USERNAME=\"$USERNAME\"#" /mnt/etc/in-arch-chroot.sh
+sed -i "s#USERPW_#USERPW=\"$USERPW\"#" /mnt/etc/in-arch-chroot.sh
+sed -i "s#ROOTPW_#ROOTPW=\"$ROOTPW\"#" /mnt/etc/in-arch-chroot.sh
+sed -i "s#CRYPTPW_#CRYPTPW=\"$CRYPTPW\"#" /mnt/etc/in-arch-chroot.sh
+chmod +x /mnt/etc/in-arch-chroot.sh
+cat /etc/pacman.d/mirrorlist > /mnt/etc/pacman.d/mirrorlist
+arch-chroot /mnt /bin/bash -c "su - -c /etc/in-arch-chroot.sh"
+# now in skript 2 ...
+umount -R /mnt
+echo ">> unmounted /mnt"
+echo ">> you can reboot or poweroff"
+exit
+## _CHROOT_ section {{{1 
+# Placeholders to be replaced {{{2
+PARTBOOT_
+PARTROOT_
+HOSTNAME_
+USERNAME_
+ROOTPW_
+USERPW_
+CRYPTPW_
+
+# Locale, Timezones {{{2
+printf "en_US.UTF-8 UTF-8
+lv_LV.UTF-8 UTF-8" > /etc/locale.gen
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+export LANG=en_US.UTF-8
+locale-gen
+ln -sf /usr/share/zoneinfo/Europe/Riga /etc/localtime
+hwclock --systohc --utc
+timedatectl set-ntp 1
+
+# Networking {{{2
+echo $HOSTNAME > /etc/hostname
+echo "127.0.0.1	localhost.localdomain localhost $HOSTNAME" > /etc/hosts
+echo "::1	localhost.localdomain localhost $HOSTNAME" >> /etc/hosts
+systemctl enable dhcpcd.service
+systemctl enable netctl-auto@$(ip link | cut -d: -f2 | grep wl | sed 's/ //').service
+pacman -S --noconfirm wpa_supplicant wpa_actiond dialog
+
+# Users {{{2
+echo "root:$ROOTPW" | chpasswd
+groupadd sudo
+useradd -m -g users -G sudo,docker -s /usr/bin/fish $USERNAME
+echo "$USERNAME:$USERPW" | chpasswd
+echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+systemctl enable docker
+
+# Ramfolder, swapspace {{{2
+mkdir -p /home/$USERNAME/tmp
+echo "tmpfs /home/$USERNAME/tmp tmpfs mode=0777,noatime 0 0" >> /etc/fstab
+fallocate -l 1G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo "/swapfile none swap defaults 0 0" >> /etc/fstab
+
+# bootloader {{{2
+bootctl --path=/boot install
+printf "timeout 4
+default arch" \
+> /boot/loader/loader.conf
+CRYPTUUID="$(blkid -o value -s UUID $PARTROOT)"
+pacman -Sy --noconfirm intel-ucode
+printf \
+"title Archlinux
+linux /vmlinuz-linux
+initrd /intel-ucode.img
+initrd /initramfs-linux.img
+options cryptdevice=UUID=$CRYPTUUID:cryptroot root=/dev/mapper/cryptroot rw" \
+> /boot/loader/entries/arch.conf
+# add encrypt to bootctl
+printf \
+"MODULES=()
+BINARIES=()
+FILES=()
+HOOKS=(base udev autodetect modconf block encrypt filesystems keyboard fsck)" \
+> /etc/mkinitcpio.conf
+mkinitcpio -p linux # here if fs2fs is used is checked or errors
+
+# Dotfiles topping {{{2
+cd /home/$USERNAME
+curl 192.168.1.102:8080/dots.tar.gz -o ff
+tar xf ff
+echo "PARTBOOT: $PARTBOOT"
+echo "PARTROOT: $PARTROOT"
+echo "HOSTNAME: $HOSTNAME"
+echo "USERNAME: $USERNAME"
+echo "ROOTPW: $ROOTPW"
+echo "USERPW: $USERPW"
+echo "CRYPTPW: $CRYPTPW"
+# vim: fdm=marker

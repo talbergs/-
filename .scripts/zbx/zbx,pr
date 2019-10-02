@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd $(zbx.resolve --working-dir)
+
+if [ ! -z $1 ]; then
+    echo -n "$1" > $PWD/.PR
+    echo "pr url created!"
+    exit 0;
+fi
+
+if [ -e $PWD/.PR ]; then
+    $BROWSER "https://git.zabbix.com/projects/ZBX/repos/zabbix/pull-requests/$(cat $PWD/.PR)/diff"
+else
+    echo "no PR number in $PWD/.PR"
+fi

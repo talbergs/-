@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# export VIMRUNTIME=$HOME/.config/vide
+# nvim-nightly -u "$VIMRUNTIME/init.vim" $@
+
+# ALSO WORKING APPROACH
+nvim-nightly \
+-u ~/.config/vide/init.vim \
+--cmd 'let $VIMRUNTIME="~/.config/vide"' \
+--cmd 'runtime! $VIMRUNTIME' \
+$@

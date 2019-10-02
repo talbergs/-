@@ -1,0 +1,25 @@
+#!/bin/bash
+[[ $1 == -h ]] && zbx.-h $0 && exit
+[ -z $1 ] && $0 -h && exit
+
+## Choose one of:
+while [[ $# > 0 ]];do case $1 in
+    #- Diff up to your current checkout diverged from the <release> branch.
+    -a|--absolute)__absolute=$1;;
+    #- Print filenames only
+    -n|--names)__names=$1;;
+    *) echo "Unknown parameter passed: $1"; exit 1;;
+esac;shift;done
+
+# TODO determine it
+realese_branch=master
+
+base=$(git merge-base $realese_branch HEAD)
+
+[ ! -z $__absolute ] && (
+    git diff $base HEAD
+)
+
+[ ! -z $__names ] && (
+    git diff --name-only $base HEAD
+)

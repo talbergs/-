@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export VIMRUNTIME=$(cd $(dirname $0)/../;pwd)
+export VIMCONFIG=$VIMRUNTIME # needed for coc.nvim
+# export NVIM_COC_LOG_LEVEL=debug
+nvim -u "$VIMRUNTIME/init.vim" $@

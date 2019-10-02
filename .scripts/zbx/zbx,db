@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z $1 ];then
+mysql -h127.0.0.1 -uroot -D"$(zbx.resolve --branch)";
+exit 0
+elif [ $1 == test_selenium ];then
+mysql -h127.0.0.1 -uroot -D"$(zbx.resolve --branch)_test_selenium";
+exit 0
+elif [ $1 == test_api ];then
+mysql -h127.0.0.1 -uroot -D"$(zbx.resolve --branch)_test_api";
+exit 0
+fi
+
+echo "pass no argument or test_api"
+exit 1

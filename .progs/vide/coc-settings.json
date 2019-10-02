@@ -1,0 +1,36 @@
+{
+	"diagnostic.errorSign": "☢",
+	"coc.preferences.currentFunctionSymbolAutoUpdate": true,
+	"coc.preferences.colorSupport": true,
+	"suggest.acceptSuggestionOnCommitCharacter": true,
+	"suggest.numberSelect": false,
+	"suggest.detailMaxLength": 40,
+	"codeLens.enable": true,
+	"session.saveOnVimLeave": true,
+	"list.autoResize": false,
+	"languageserver": {
+		"efm": {
+			"command": "efm-langserver",
+			"args": [],
+			// custom config path
+			// "args": ["-c", "/path/to/your/config.yaml"],
+			"filetypes": ["vim", "eruby", "markdown", "yaml"]
+		},
+		"intelephense": {
+			"command": "intelephense",
+			"args": ["--stdio"],
+			"filetypes": ["php"],
+			"initializationOptions": {
+				"storagePath": "/tmp/intelephense"
+			}
+		}
+	},
+  "coc.preferences.rootPatterns": [
+    ".vim",
+    ".git",
+    ".hg",
+    ".projections.json",
+    "zabbix.php"
+  ],
+  "git.enableGutters": true
+}

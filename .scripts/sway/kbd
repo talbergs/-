@@ -1,0 +1,4 @@
+#!/bin/bash
+
+swaymsg input "*" xkb_layout "lv(apostrophe)"
+swaymsg input "*" xkb_layout "us"

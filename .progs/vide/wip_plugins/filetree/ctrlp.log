@@ -1,0 +1,11 @@
+21:40:09 [INFO] ctrlp_rs: [src/main.rs:72] Connection to neovim
+21:40:09 [INFO] ctrlp_rs: [src/main.rs:84] Starting event loop
+21:40:09 [DEBUG] neovim_lib::rpc::client: [/home/ada/.cargo/registry/src/github.com-1ecc6299db9ec823/neovim-lib-0.6.1/src/rpc/client.rs:242] Get message RpcNotification { method: "subscribe-buf", params: [Integer(PosInt(2)), String(Utf8String { s: Ok("/home/ada/Dropbox/vide/wip_plugins/filetree") })] }
+21:40:09 [INFO] ctrlp_rs::handler: [src/handler.rs:20] Incoming event: subscribe-buf
+21:40:09 [INFO] ctrlp_rs: [src/main.rs:86] Waiting
+21:40:09 [INFO] ctrlp_rs: [src/main.rs:96] unhandled event
+21:40:09 [INFO] ctrlp_rs: [src/main.rs:86] Waiting
+21:44:59 [DEBUG] neovim_lib::rpc::client: [/home/ada/.cargo/registry/src/github.com-1ecc6299db9ec823/neovim-lib-0.6.1/src/rpc/client.rs:242] Get message RpcNotification { method: "shutdown", params: [] }
+21:44:59 [INFO] ctrlp_rs::handler: [src/handler.rs:20] Incoming event: shutdown
+21:44:59 [INFO] ctrlp_rs: [src/main.rs:90] Shutting down
+21:44:59 [INFO] ctrlp_rs: [src/main.rs:24] exiting

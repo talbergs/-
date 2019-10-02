@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export NVIM_COC_LOG_LEVEL=debug
+export VIMCONFIG=$HOME/Dropbox/vide # needed for coc.nvim
+export VIMRUNTIME=$HOME/Dropbox/vide
+nvim -u "$VIMRUNTIME/init.vim" $@
+
+# ALSO WORKING APPROACH
+# nvim-nightly \
+# -u ~/.config/vide/init.vim \
+# --cmd 'let $VIMRUNTIME="~/.config/vide"' \
+# --cmd 'runtime! $VIMRUNTIME' \
+# $@

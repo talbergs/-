@@ -1,0 +1,13 @@
+#!/bin/bash
+#| Writes into primary clipboard.
+#| Accepts piped input.
+#| Or array of arguments will be put into clipboard.
+[[ $1 == -h ]] && grep '^#|' $0 | sed 's/^#//' && exit
+
+if [ -p /dev/stdin ]; then
+    cat | xclip -selection clipboard
+else
+    [ -z "$1" ] && exit 2
+    echo "$@" | xclip -selection clipboard
+fi
+

@@ -1,0 +1,6 @@
+- [ ] spell check in comments :h spell-syntax
+- [ ] colorscheme per filetype
+- [ ] minimal nerdtree alternative (no netrw)
+- [ ] many statuslines per filetype (rotate)
+- [ ] SQL formatter
+- [ ] Some watch mode for buffer

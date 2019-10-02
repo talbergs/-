@@ -1,0 +1,24 @@
+#!/bin/bash
+## Server aliases
+[[ $1 == -h ]] && zbx.-h "$0" && exit
+
+build_prefix=$(zbx.resolve --build-prefix)
+
+binary=$build_prefix/sbin/zabbix_server
+logfile=$build_prefix/zabbix_server.log
+configfile=$build_prefix/etc/zabbix_server.conf
+
+while [[ "$#" > 0 ]]; do case $1 in
+    #- Starts server in background.
+    -r|--run) $binary;;
+    #- Tail follow server logs.
+    -t|--tail-logs) tail --retry -f $logfile;;
+    #- Opens fuzzy killer.
+    -k|--kill) fkill zabbix_server;;
+    #- Opens current config file.
+    -e|--edit-config) $EDITOR $configfile;;
+    #- Sends cache reload request.
+    -c|--config-cache-reload) $binary -R config_cache_reload;;
+    *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+

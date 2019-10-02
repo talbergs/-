@@ -1,0 +1,34 @@
+#!/bin/bash
+## Clips common stuff.
+[[ $1 == -h ]] && zbx.-h "$0" && exit
+
+
+# targetBranch=refs%2Fheads%2Frelease%2F4.0&sourceBranch=refs%2Fheads%2Ffeature%2FZBX-16354-4.0&targetRepoId=152#frontends/php/include/triggers.inc.php
+
+# we use first 7 digits of sha
+sha="$(git rev-parse HEAD | head -c 9)"
+nick="[~talbergs]"
+version=$(zbx.resolve --version)
+
+branch=$(zbx.resolve --branch)
+branch="[$branch|https://git.zabbix.com/projects/ZBX/repos/zabbix/compare/diff?targetBranch=refs%2Ftags%2F${version}&sourceBranch=refs%2Fheads%2F${branch}]"
+sha="[$sha|https://git.zabbix.com/projects/ZBX/repos/zabbix/commits/$sha]"
+
+nick="<$nick>"
+compare="<$nick>"
+
+# TODO extra newline is clipped
+echo "$nick RESOLVED in ${sha}
+- *${version}* ${sha}
+$nick CLOSED
+git cherry-pick -m 1 -x $(git rev-parse HEAD | head -c 9)
+git merge origin/$(zbx.resolve --branch) --no-ff --no-commit # because commit message must be same as changelog entry
+$nick CLOSED with minor fix in ${sha}
+$nick IMPLEMENTED in ${sha}
+FIXED in development branch ${branch}
+git push --delete origin $(zbx.resolve --branch)
+*(1)* No translation string changes.
+IMPLEMENTED in development branch ${branch}" \
+    | fzf --height 10\
+    | tr --delete '\n'\
+    | xclip -selection clipboard;

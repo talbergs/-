@@ -1,0 +1,126 @@
+#!/bin/bash
+## Extracts variables.
+[[ $1 == -h ]] && zbx.-h "$0" && exit
+
+while [[ "$#" > 0 ]]; do case $1 in
+    #- fetches db version
+    -Vd|--version-db) _version_db=1;;
+    #- fetches export version
+    -Ve|--version-export) _version_export=1;;
+    #- fetches api version
+    -Va|--version-api) _version_api=1;;
+    #- fetches version
+    -V |--version) _version=1;;
+    #- extracts ticket name based on git branch
+    -t |--ticket) _ticket=1;;
+    #- extracts git branch name
+    -b |--branch) _branch=1;;
+    #- creates web url
+    -w |--web-url) _web_url=1;;
+    #- creates web api url used for tests running in copied src
+    -wj|--json-rpc-url) _json_rpc_url=1;;
+    #- creates web api url used for tests running in copied src
+    -wa|--web-api-test-url) _web_api_test_url=1;;
+    #- creates jira ticket url
+    -j |--jira-url) _jira_url=1;;
+    #- extracts working dir
+    -d |--working-dir) _working_dir=1;;
+    #- common where to build server and everything
+    -x |--build-prefix) _build_prefix=1;;
+    #- provides vim session file
+    -v |--vim-session) _vim_session=1;;
+    #- Open editot to update this stcipt.
+    -ED) $EDITOR $0; exit 0;;
+    *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
+# an array
+git_ref_path=($(git symbolic-ref HEAD | xargs -d '/'))
+
+ticket_name=$(echo -n ${git_ref_path[3]} | cut -d- -f1-2)
+branch_name=${git_ref_path[2]}/${git_ref_path[3]}
+working_dir=$(git rev-parse --show-toplevel)
+build_prefix=$working_dir/dist
+
+mkdir -p $build_prefix
+
+if [[ ! -z $_branch ]]; then
+    echo -n $branch_name;
+fi
+
+if [[ ! -z $_jira_url ]]; then
+    echo -n "https://support.zabbix.com/browse/$ticket_name";
+fi
+
+if [[ ! -z $_vim_session ]]; then
+    # please have Obsession.vim with this
+    vims=${build_prefix}Session.vim
+    if [ ! -f $vims ];then
+        # vimu=${build_prefix}Undodir.vim
+        # mkdir -p $vimu
+        # echo "Obsession ${vims}|set undodir=${vimu}|set noundofile" >> $vims
+        echo "Obsession ${vims}" > $vims
+    fi
+    echo -n $vims;
+fi
+
+if [[ ! -z $_build_prefix ]]; then
+    echo -n $build_prefix;
+fi
+
+if [[ ! -z $_working_dir ]]; then
+    echo -n $working_dir;
+fi
+
+if [[ ! -z $_json_rpc_url ]]; then
+    url=$(echo $working_dir | sed "s#$(git-wt.sh root)##")
+    echo -n "http://zabbix.loc${url}/frontends/php/api_jsonrpc.php";
+    # url=$(echo $working_dir | awk --field-separator=/ '{print $(NF-1)"/"$NF}')
+    # echo -n "https://zabbix.loc/${url}/frontends/php/";
+fi
+
+if [[ ! -z $_web_url ]]; then
+    url=$(echo $working_dir | sed "s#$(git-wt.sh root)##")
+    echo -n "https://zabbix.loc${url}/frontends/php/";
+    # url=$(echo $working_dir | awk --field-separator=/ '{print $(NF-1)"/"$NF}')
+    # echo -n "https://zabbix.loc/${url}/frontends/php/";
+fi
+
+if [[ ! -z $_web_api_test_url ]]; then
+    url=$(echo $working_dir | sed "s#$(git-wt.sh root)##")
+    echo -n "http://zabbix.loc${url}/frontends/php-test-api/";
+    # url=$(echo $working_dir | awk --field-separator=/ '{print $(NF-1)"/"$NF}')
+    # echo -n "https://zabbix.loc/${url}/frontends/php/";
+fi
+
+if [[ ! -z $_ticket ]]; then
+    echo -n $ticket_name;
+fi
+
+if [[ ! -z $_version ]]; then
+    cd $working_dir;
+    echo -n $(cat ./frontends/php/include/defines.inc.php \
+        | grep ZABBIX_VERSION \
+        | awk -F\' '{print $4}');
+fi
+
+if [[ ! -z $_version_db ]]; then
+    cd $working_dir;
+    echo -n $(cat ./frontends/php/include/defines.inc.php \
+        | grep ZABBIX_DB_VERSION \
+        | awk -F\' '{print $3}');
+fi
+
+if [[ ! -z $_version_export ]]; then
+    cd $working_dir;
+    echo -n $(cat ./frontends/php/include/defines.inc.php \
+        | grep ZABBIX_EXPORT_VERSION \
+        | awk -F\' '{print $4}');
+fi
+
+if [[ ! -z $_version_api ]]; then
+    cd $working_dir;
+    echo -n $(cat ./frontends/php/include/defines.inc.php \
+        | grep ZABBIX_API_VERSION \
+        | awk -F\' '{print $4}');
+fi
