@@ -76,7 +76,7 @@ pacstrap /mnt base base-devel xorg-server-xwayland sway fish termite \
   mpv mpd youtube-dl \
   neovim wl-clipboard nodejs npm the_silver_searcher fzf \
   alsa-utils pulseaudio pavucontrol pulsemixer \
-  chromium docker openssh
+  chromium docker openssh git rsync
 
 # Fstab {{{2
 genfstab -U -p /mnt > /mnt/etc/fstab
@@ -137,6 +137,7 @@ systemctl enable docker
 
 # Ramfolder, swapspace {{{2
 mkdir -p /home/$USERNAME/tmp
+chown -R $USERNAME:users $_
 echo "tmpfs /home/$USERNAME/tmp tmpfs mode=0777,noatime 0 0" >> /etc/fstab
 fallocate -l 1G /swapfile
 chmod 600 /swapfile
@@ -168,9 +169,12 @@ HOOKS=(base udev autodetect modconf block encrypt filesystems keyboard fsck)" \
 mkinitcpio -p linux # here if fs2fs is used is checked or errors
 
 # Dotfiles topping {{{2
-cd /home/$USERNAME
-curl 192.168.1.102:8080/dots.tar.gz -o ff
-tar xf ff
+git clone --depth 1 https://github.com/talbergs/- /tmp/life
+chown -R $USERNAME:users /tmp/life
+rsync -av $_/ /home/$USERNAME/
+rm -rf $_/.git
+rm /etc/in-arch-chroot.sh
+
 echo "PARTBOOT: $PARTBOOT"
 echo "PARTROOT: $PARTROOT"
 echo "HOSTNAME: $HOSTNAME"
