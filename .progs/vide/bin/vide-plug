@@ -1,0 +1,42 @@
+#!/bin/bash
+VIMRUNTIME=$1
+RTP=$2
+GH=https://github.com
+
+sleep 1 # take a breath
+cd $VIMRUNTIME
+
+IFS=','
+for RT in $RTP;do
+    if ! [[ $RT =~ "github" ]]; then
+        continue
+    fi
+
+    DIR=${RT##*$VIMRUNTIME/}
+    REP=${DIR##*github/}
+    if [[ $REP =~ ":" ]]; then
+        BRANCH=${REP#*:}
+        continue
+    fi
+
+    if [ -d $DIR ]; then
+        # collect only commit messages
+        UPD=$(git log HEAD..origin/$BRANCH --pretty=format:%s)
+        if [ ! -z $UPD ];then
+            git pull
+            # TODO: make icon and decent view
+            notify-send "[VI-plug] Update received:$REP: $UPD"
+        fi
+    else
+        if [ ! -z $BRANCH ]; then
+            git clone --depth=1 --branch=$BRANCH $GH/$REP $DIR
+echo "git clone --depth=1 --branch=$BRANCH $GH/$REP $DIR" >> /tmp/file
+            BRANCH=
+        else
+            git clone --depth=1 $GH/$REP $DIR
+echo "git clone --depth=1 $GH/$REP $DIR" >> /tmp/file
+        fi
+
+        notify-send "[VI-plug] Installed: $REP"
+    fi
+done

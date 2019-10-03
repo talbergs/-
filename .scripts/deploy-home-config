@@ -1,4 +1,4 @@
 #!/usr/bin/fish
 cd ~
-tar cf tes.tar.gz (ag --ignore yank --files-with-matches --hidden --max-count=1 --silent @dotfile ./.config) (find ./.scripts ./.progs -type f | cut -f2 | ag --invert-match gitgub | ag --invert-match target | ag --invert-match '\.git')
+tar cf tes.tar.gz (ag --ignore yank --files-with-matches --hidden --max-count=1 --silent @dotfile ./.config) (find ./.scripts ./.progs -type f | cut -f2 | ag --invert-match github | ag --invert-match target | ag --invert-match '\.git')
 tar tf tes.tar.gz

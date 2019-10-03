@@ -11,32 +11,35 @@ colo gui-base16-eighties
 
 " {{{1 PLUGINS
 
-" {{{2 vim-easy-align
-se rtp+=$VIMRUNTIME/gitgub/vim-easy-align
+" {{{2 vim-easy-align, hlsearch
+se rtp+=$VIMRUNTIME/github/junegunn/vim-easy-align
 xm ga <plug>(EasyAlign)
 
 " {{{2 fzf
-se rtp+=$VIMRUNTIME/gitgub/fzf
-se rtp+=$VIMRUNTIME/gitgub/fzf.vim
+se rtp+=$VIMRUNTIME/github/junegunn/fzf
+se rtp+=$VIMRUNTIME/github/junegunn/fzf.vim
 nn <unique><silent> t :BTags<cr>
 nn <unique><silent> <leader>f :Files<cr>
 nn <unique><silent> <leader>b :Buffers<cr>
 nn <unique><silent> <leader>F :<c-u>execute 'Rg '.expand('<cword>')<cr>
 
 " {{{2 pope
-se rtp+=$VIMRUNTIME/gitgub/vim-commentary
-se rtp+=$VIMRUNTIME/gitgub/vim-surround
-se rtp+=$VIMRUNTIME/gitgub/vim-abolish
-se rtp+=$VIMRUNTIME/gitgub/vim-repeat
+se rtp+=$VIMRUNTIME/github/tpope/vim-commentary
+se rtp+=$VIMRUNTIME/github/tpope/vim-surround
+se rtp+=$VIMRUNTIME/github/tpope/vim-abolish
+se rtp+=$VIMRUNTIME/github/tpope/vim-repeat
+
 " {{{2 Mundo
-se rtp+=$VIMRUNTIME/gitgub/vim-mundo
+" requires python3
+se rtp+=$VIMRUNTIME/github/simnalamburt/vim-mundo
 
 " {{{2 vDebug
 " requires python3
-" se rtp+=$VIMRUNTIME/gitgub/vdebug
+" se rtp+=$VIMRUNTIME/github/vdebug
 
 " {{{2 coc
-set rtp+=$VIMRUNTIME/gitgub/coc.nvim
+set rtp+=$VIMRUNTIME/github/neoclide/coc.nvim:release
+set rtp+=$VIMRUNTIME/github/neoclide/coc.nvim
 let g:coc_global_extensions = [
 \'coc-lists', 'coc-yank', 'coc-json', 'coc-highlight', 'coc-css', 'coc-snippets', 'coc-git', 'coc-tsserver',
 \'coc-html', 'coc-emmet', 'coc-rls', 'coc-ccls']
@@ -56,7 +59,7 @@ call Hi('CocInfoSign', g:hi0C, g:hi01, 'bold')
 call Hi('CocHintSign', g:hi05, g:hi01, 'bold')
 
 " {{{2 nerd
-se rtp+=$VIMRUNTIME/gitgub/nerdtree " SUCH A BLOAT
+se rtp+=$VIMRUNTIME/github/scrooloose/nerdtree " SUCH A BLOAT
 nn <unique><silent> <leader>n :NERDTreeToggle<cr>
 nn <unique><silent> <leader>N :NERDTreeFind<cr>
 
@@ -96,11 +99,7 @@ nn <unique><silent> <c-down> 10<c-w>-
 nn <unique><silent> <leader>* :let @/ = '\<' . expand('<cword>') . '\>' <bar> set hlsearch<cr>
 " }}}
 
-" {{{ 0.4 is not released yet
-if has('nvim-0.4')
-  se pumblend=7
-en
-" }}}
+se pumblend=7
 
 nn <unique><expr> <f2> util#verbose_buf()
 " Go back to last misspelled word and pick first suggestion while typing.
@@ -109,4 +108,6 @@ ino <c-l> <c-g>u<esc>[s1z=`]a<c-g>u
 
 se tal=%!framework#tabline()
 se stl=%!framework#statusline()
+
+cal jobstart('vide-plug '.$VIMRUNTIME.' '.&rtp.' &')
 " vim: fdm=marker fdc=3

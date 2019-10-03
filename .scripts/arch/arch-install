@@ -40,6 +40,7 @@ echo "$(tput bold)THATS IT! come back in approx 15 minutes$(tput sgr0)"
 echo
 
 # Rank mirrors if needed {{{2
+pacman -Sy --noconfirm archlinux-keyring
 (( $(cat /etc/pacman.d/mirrorlist | wc -l) > 10 )) && (
 echo ">> Ranking top 5 fastest mirrors..." 
 which rankmirrors &>null || pacman -Sy --noconfirm --needed pacman-contrib &>null
@@ -76,7 +77,8 @@ pacstrap /mnt base base-devel xorg-server-xwayland sway fish termite \
   mpv mpd youtube-dl \
   neovim wl-clipboard nodejs npm the_silver_searcher fzf \
   alsa-utils pulseaudio pavucontrol pulsemixer \
-  chromium docker openssh git rsync
+  chromium docker openssh git rsync wpa_supplicant dialog \
+  archlinux-keyring libnotify hub
 
 # Fstab {{{2
 genfstab -U -p /mnt > /mnt/etc/fstab
@@ -139,7 +141,7 @@ systemctl enable docker
 mkdir -p /home/$USERNAME/tmp
 chown -R $USERNAME:users $_
 echo "tmpfs /home/$USERNAME/tmp tmpfs mode=0777,noatime 0 0" >> /etc/fstab
-fallocate -l 1G /swapfile
+fallocate -l 16G /swapfile
 chmod 600 /swapfile
 mkswap /swapfile
 swapon /swapfile
