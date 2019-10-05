@@ -12,7 +12,7 @@ se nowrap noswf nosmd
 " Shiftwidth is equal to tabstop when it is zero.
 se sw=0
 " At any time do the toggle :setl list!
-se lcs=space:⋅,trail:•,tab:᚛\ ,nbsp:⦸,extends:»,precedes:«
+se lcs=space:⋅,trail:•,tab:˖\ ,nbsp:⦸,extends:»,precedes:«
 " The best vim-startify right here
 se shm+=IWcFqT
 " noswap anyways, needed for snappy CursorHold evt
@@ -27,5 +27,5 @@ se fdl=99
 se nosm
 " smart indentation
 se si
-" sway/wayland issues.. with "+" register uhh, help!
-" se cb+=unnamedplus
+" Use silent! to avoid potential E11 if the command-line window is open.
+au FocusGained * sil! checkt

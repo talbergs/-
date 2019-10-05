@@ -110,4 +110,6 @@ se tal=%!framework#tabline()
 se stl=%!framework#statusline()
 
 cal jobstart('vide-plug '.$VIMRUNTIME.' '.&rtp.' &')
+" AUfiles {{{1
+
 " vim: fdm=marker fdc=3

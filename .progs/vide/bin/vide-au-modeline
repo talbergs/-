@@ -1,0 +1,26 @@
+#!/bin/bash
+FILENAME=$1
+unset A
+IFS=$'\n'
+
+AUF=$(ag --literal " auf${A}: " $FILENAME | cut -f 3 -d ':')
+for cmd in $AUF;do
+	cmd=$(echo $cmd | xargs )
+	bin=${cmd/%\ *}
+	if [ -z $(which $bin) ];then
+		notify-send -u critical "auf: Not in \$PATH $bin"
+		continue
+	fi
+	eval $cmd ${FILENAME}
+done
+
+AU=$(ag --literal " au${A}: " $FILENAME | cut -f 3 -d ':')
+for cmd in $AU;do
+	cmd=$(echo $cmd | xargs )
+	bin=${cmd/%\ *}
+	if [ -z $(which $bin) ];then
+		notify-send -u critical "au: Not in \$PATH $bin"
+		continue
+	fi
+	eval $cmd
+done

@@ -1,0 +1,3 @@
+# auf: crontab-update
+# @dotfile
+# * * * * * $HOME/.scripts/arch/test-cron

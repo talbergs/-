@@ -78,7 +78,8 @@ pacstrap /mnt base base-devel xorg-server-xwayland sway fish termite \
   neovim wl-clipboard nodejs npm the_silver_searcher fzf \
   alsa-utils pulseaudio pavucontrol pulsemixer \
   chromium docker openssh git rsync wpa_supplicant dialog \
-  archlinux-keyring libnotify hub
+  archlinux-keyring libnotify hub cronie brightnessctl \
+  transmission-gtk
 
 # Fstab {{{2
 genfstab -U -p /mnt > /mnt/etc/fstab
@@ -136,6 +137,7 @@ useradd -m -g users -G sudo,docker -s /usr/bin/fish $USERNAME
 echo "$USERNAME:$USERPW" | chpasswd
 echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 systemctl enable docker
+systemctl enable cronie
 
 # Ramfolder, swapspace {{{2
 mkdir -p /home/$USERNAME/tmp

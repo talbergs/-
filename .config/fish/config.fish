@@ -1,6 +1,7 @@
 # @dotfile
 set -gx TERMINAL termite
 set -gx EDITOR vide
+set -gx USER (whoami)
 set -gx BROWSER chromium
 set -gx XKB_DEFAULT_LAYOUT "us,lv(apostrophe)"
 set -gx XKB_DEFAULT_OPTIONS grp:alt_shift_toggle

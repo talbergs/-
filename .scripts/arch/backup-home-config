@@ -1,0 +1,15 @@
+#!/bin/bash
+REP=git@github.com:talbergs/-.git
+cd ~
+CONF=$(ag --ignore yank --files-with-matches --hidden --max-count=1 --silent @dotfile ./.config)
+SCRIPTS_PROGS=$(find ./.scripts ./.progs -type f | cut -f2 | ag --invert-match github | ag --invert-match target | ag --invert-match '\.git')
+
+tar cf homeconfig.tar.gz $CONF $SCRIPTS_PROGS
+rm -rf /tmp/homeconfig 2>null
+mkdir /tmp/homeconfig
+cd $_
+git clone $REP .
+tar xf ~/homeconfig.tar.gz 
+git add .
+git commit -m "automated backup"
+git push
