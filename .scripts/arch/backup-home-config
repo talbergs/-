@@ -8,8 +8,15 @@ tar cf homeconfig.tar.gz $CONF $SCRIPTS_PROGS
 rm -rf /tmp/homeconfig 2>null
 mkdir /tmp/homeconfig
 cd $_
-git clone $REP .
+git clone --depth=1 $REP .
+rm -rf $(find . -mindepth 1 -maxdepth 1 ! -name .git)
 tar xf ~/homeconfig.tar.gz 
-git add .
-git commit -m "automated backup"
-git push
+rm ~/homeconfig.tar.gz 
+
+if [ ! -z "$(git diff)" ]; then
+	git add .
+	git commit -m "automated commit $(date)"
+	git push
+else
+	echo nothing to do
+fi
