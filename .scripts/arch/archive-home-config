@@ -5,7 +5,18 @@ MARKER=@dotfile
 ARCHIVE=/tmp/homeconfig.tar.gz
 
 cd $HOME
-CONF=$(ag --ignore yank --files-with-matches --hidden --max-count=1 --silent $MARKER ./.config)
+
+CONF=$(\
+	ag \
+		--ignore yank \
+		--vimgrep \
+		--hidden \
+		--max-count=1 \
+		--silent $MARKER \
+	./.config \
+	| cut -f 1 -d ':'\
+)
+
 SCRIPTS_PROGS=$(\
 	find ./.scripts ./.progs -type f \
 	| cut -f2 \
