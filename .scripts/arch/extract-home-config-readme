@@ -1,24 +1,7 @@
 #!/bin/bash
 # @dotreadme 1: This readme is extracted from actual config, thus it is up to date.
 
-REP=git@github.com:talbergs/-.git
-cd ~
-CONF=$(ag --ignore yank --files-with-matches --hidden --max-count=1 --silent @dotfile ./.config)
-SCRIPTS_PROGS=$(find ./.scripts ./.progs -type f | cut -f2 | ag --invert-match github | ag --invert-match target | ag --invert-match '\.git')
-
-tar cf homeconfig.tar.gz $CONF $SCRIPTS_PROGS
-rm -rf /tmp/homeconfig 2>null
-mkdir /tmp/homeconfig
-cd $_
-git clone --depth=1 $REP .
-rm -rf $(find . -mindepth 1 -maxdepth 1 ! -name .git)
-tar xf ~/homeconfig.tar.gz 
-rm $_
-
-if [ ! -z "$(git diff)" ]; then
-	git add .
-	git commit -m "automated commit $(date)"
-	git push
-else
-	echo nothing to do
-fi
+# @dot TODO: implement to be used in backup-homeconfig
+# @dot TODO: solve cross dependency maintenance in scripts
+# @dot TODO: rename dot related scripts with prefix dot-<action>
+ag --vimgrep @dotreadme $(tar tf $(archive-home-config))

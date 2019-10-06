@@ -1,0 +1,15 @@
+#!/bin/bash
+LOGFILE=/tmp/$(basename $0).log
+
+echo [ $(date) ] begin backup >> $LOGFILE
+backup-home-config &>> $LOGFILE
+EX=$?
+
+export DISPLAY=:0
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+
+if [ -z $EX ];then
+	notify-send "Home config backup successful."
+else
+	notify-send -u critical "Home config backup unsuccessful! LOG: $LOGFILE"
+fi

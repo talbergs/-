@@ -1,2 +1,2 @@
 #!/usr/bin/fish
-ls -la
+ls -la $argv

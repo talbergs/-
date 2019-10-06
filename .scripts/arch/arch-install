@@ -24,6 +24,8 @@ fi
 set +e
 
 # Form {{{2
+# @dot TODO: prompts for swapspace size, wifi or wire setup.
+# @dot TODO: install rustup
 lsblk -Sp
 read -r -p '>> Enter drive: (default: /dev/sda):' DRIVE
 DRIVE=${DRIVE:-/dev/sda}
