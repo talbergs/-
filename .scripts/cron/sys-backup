@@ -2,8 +2,12 @@
 LOGFILE=/tmp/$(basename $0).log
 
 echo "[ $(date) ] Begin sys-backup {{{1" >> $LOGFILE
-backup-home-config &>> $LOGFILE
+OUT=$(backup-home-config 2> /tmp/err)
 EX=$?
+ERR=$(</tmp/err)
+
+echo $OUT >> $LOGFILE
+echo $ERR >> $LOGFILE
 
 export DISPLAY=:0
 export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus

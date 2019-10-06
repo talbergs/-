@@ -1,5 +1,6 @@
 #!/bin/bash
 # @dotfile 
+set +x
 
 REP=git@github.com:talbergs/-.git
 STAGE=/tmp/homeconfig
