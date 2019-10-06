@@ -1,0 +1,9 @@
+# auf: crontab-update
+# @dotfile
+# $PATH=/usr/bin:/bin
+# for notify-sent to work: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+# running bash script through fish cos PATH and SSH_AGENT etc is set by fish 
+# 14 * * * * fish -c "bash $HOME/.scripts/cron/sys-backup"
+# * * * * * echo $HOME >> /tmp/aaa
+0 */3 * * * sudo pacman -Sc --noconfirm
+5 */3 * * * sudo pacman -Syuw --noconfirm

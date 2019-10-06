@@ -8,7 +8,7 @@ mkdir $STAGE && cd $_
 
 git clone --depth=1 $REP .
 rm -rf $(find . -mindepth 1 -maxdepth 1 ! -name .git)
-tar xf $(archive-home-config) --directory=$STAGE
+tar xf $(archive-home-config)
 
 if [ ! -z "$(git diff)" ]; then
 	git add .
