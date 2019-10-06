@@ -1,6 +1,6 @@
 #!/bin/bash
 # @dotfile 
-set +x
+set -e
 
 REP=git@github.com:talbergs/-.git
 STAGE=/tmp/homeconfig
@@ -18,7 +18,6 @@ if [ ! -z "$DIFF" ]; then
 	git add .
 	git commit -m "automated commit $(date)"
 	git push
-	exit $?
 else
 	echo nothing to do
 	exit 255
