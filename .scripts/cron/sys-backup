@@ -12,6 +12,4 @@ if [ $EX -eq 0 ];then
 	notify-send "Home config backup successful."
 elif [ $EX -ne 255 ];then
 	notify-send -u critical "Home config backup unsuccessful! LOG: $LOGFILE"
-else 
-	notify-send "NOTHING TO DO."
 fi

@@ -19,14 +19,13 @@ if [ -z "$(git status --porcelain)" ]; then
 	exit 255
 else
 	IFS=$'\n'
-	echo "DIFF {{{1" 1>&2
+	echo "DIFF {{{2" 1>&2
 	for line in $(git diff);do
 		echo "$line" 1>&2
 	done
-	echo "}}}1" 1>&2
+	echo "}}}2" 1>&2
 
 	git add .
 	git commit -m "automated commit $(date)"
 	git push
 fi
-

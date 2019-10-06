@@ -6,6 +6,8 @@ ARCHIVE=/tmp/homeconfig.tar.gz
 
 cd $HOME
 
+# For some reason when using ag --files-with-matches there is no output
+# if running in crontab. For this reason --vimgrep + cut is used.
 CONF=$(\
 	ag \
 		--ignore yank \
