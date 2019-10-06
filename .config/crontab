@@ -10,7 +10,7 @@
 # Running bash script through fish cos PATH and SSH_AGENT and more by fish.
 #
 
-34 * * * * fish -c "bash $HOME/.scripts/cron/sys-backup"
+36 * * * * fish -c "bash $HOME/.scripts/cron/sys-backup"
 
 # * * * * * echo $HOME >> /tmp/aaa
 0 */3 * * * sudo pacman -Sc --noconfirm
