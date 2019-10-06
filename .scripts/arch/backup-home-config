@@ -1,17 +1,14 @@
 #!/bin/bash
+# @dotfile 
 REP=git@github.com:talbergs/-.git
-cd ~
-CONF=$(ag --ignore yank --files-with-matches --hidden --max-count=1 --silent @dotfile ./.config)
-SCRIPTS_PROGS=$(find ./.scripts ./.progs -type f | cut -f2 | ag --invert-match github | ag --invert-match target | ag --invert-match '\.git')
+STAGE=/tmp/homeconfig
 
-tar cf homeconfig.tar.gz $CONF $SCRIPTS_PROGS
-rm -rf /tmp/homeconfig 2>null
-mkdir /tmp/homeconfig
-cd $_
+rm -rf $STAGE 2>/dev/null
+mkdir $STAGE && cd $_
+
 git clone --depth=1 $REP .
 rm -rf $(find . -mindepth 1 -maxdepth 1 ! -name .git)
-tar xf ~/homeconfig.tar.gz 
-rm ~/homeconfig.tar.gz 
+tar xf $(archive-home-config) --directory=$STAGE
 
 if [ ! -z "$(git diff)" ]; then
 	git add .

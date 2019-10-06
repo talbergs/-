@@ -95,6 +95,8 @@ sed -i "s#USERPW_#USERPW=\"$USERPW\"#" /mnt/etc/in-arch-chroot.sh
 sed -i "s#ROOTPW_#ROOTPW=\"$ROOTPW\"#" /mnt/etc/in-arch-chroot.sh
 sed -i "s#CRYPTPW_#CRYPTPW=\"$CRYPTPW\"#" /mnt/etc/in-arch-chroot.sh
 chmod +x /mnt/etc/in-arch-chroot.sh
+# @dot TODO: mirrorlist dir not install
+# @dot TODO: pacman conf set Color VerbosePkgLists CheckSpace ILoveCandy
 cat /etc/pacman.d/mirrorlist > /mnt/etc/pacman.d/mirrorlist
 arch-chroot /mnt /bin/bash -c "su - -c /etc/in-arch-chroot.sh"
 # now in skript 2 ...
@@ -115,7 +117,7 @@ CRYPTPW_
 # Locale, Timezones {{{2
 printf "en_US.UTF-8 UTF-8
 lv_LV.UTF-8 UTF-8" > /etc/locale.gen
-echo LANG=en_US.UTF-8 > /etc/locale.conf
+echo LANG=lv_LV.UTF-8 > /etc/locale.conf
 export LANG=en_US.UTF-8
 locale-gen
 ln -sf /usr/share/zoneinfo/Europe/Riga /etc/localtime
