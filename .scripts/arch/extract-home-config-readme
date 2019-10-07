@@ -8,7 +8,7 @@ INSTALL_SCRIPT=https://raw.githubusercontent.com/talbergs/-/master/.scripts/arch
 DOTFILES=$(tar tf $(archive-home-config))
 
 # @dotdoc-filemarkers @dotdoc-<group?> - append a documentation line to a group
-echo 'To an instant rice from Arch installation media:'
+echo 'Instant rice from Arch installation media:'
 echo '```bash'
 echo $ curl $INSTALL_SCRIPT '>' run.sh
 echo $ bash '$_'
