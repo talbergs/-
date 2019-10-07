@@ -7,7 +7,7 @@ fi
 
 if [ $status == "active" ];then
 	ERR=$(crontab $1 2>&1)
-	[ -z $ERR ] && notify-send "Crontab updated" || notify-send -u critical "crontab: $ERR"
+	[ -z $ERR ] && notify-send "Crontab updated" || notify-send -u critical "Crontab:" "$ERR"
 else
-	notify-send -u critical "crond status: $status"
+	notify-send -u critical "crond status: $status" "$(systemctl status cronie)"
 fi

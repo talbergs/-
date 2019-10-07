@@ -1,7 +1,20 @@
 #!/bin/bash
 # @dotreadme 1: This readme is extracted from actual config, thus it is up to date.
 
-# @dot TODO: implement to be used in backup-homeconfig
 # @dot TODO: solve cross dependency maintenance in scripts
-# @dot TODO: rename dot related scripts with prefix dot-<action>
-ag --vimgrep @dotreadme $(tar tf $(archive-home-config))
+# @dot TODO: rename dot framework related scripts with prefix dot-<action>
+
+INSTALL_SCRIPT=https://raw.githubusercontent.com/talbergs/-/master/.scripts/arch/arch-install
+DOTFILES=$(tar tf $(archive-home-config))
+
+# @dotdoc-filemarkers @dotdoc-<group?> - append a documentation line to a group
+echo 'To an instant rice from Arch installation media:'
+echo '```bash'
+echo $ curl $INSTALL_SCRIPT '>' run.sh
+echo $ bash '$_'
+echo '```'
+echo ''
+# echo "${DOTFILES}"
+# ag --vimgrep @dotreadme
+
+

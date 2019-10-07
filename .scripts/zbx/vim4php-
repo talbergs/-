@@ -1,5 +1,0 @@
-#!/bin/bash
-export VIMCONFIG=$HOME/Dropbox/bin/vim4php
-
-which intelephense || sudo npm i intelephense -g
-nvim -u $HOME/Dropbox/bin/vim4php/vimrc $@

@@ -91,7 +91,7 @@ bindsym $mod+w exec $browser
 
 # Notifications {{{1
 bindsym Control+Space exec makoctl dismiss
-bindsym Control+Shift+Space exec makoctl dismiss --all
+# bindsym Control+Shift+Space exec makoctl dismiss --all
 
 # FunctionKeys {{{1
 bindsym --locked XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') +5%
