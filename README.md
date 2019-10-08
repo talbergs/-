@@ -5,5 +5,5 @@ $ bash $_
 ```
 or
 ```bash
-$ curl -sL > a
+$ curl -sL > a && bash a
 ```
