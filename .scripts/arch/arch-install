@@ -73,7 +73,7 @@ mkdir /mnt/boot
 mount $PARTBOOT /mnt/boot
 
 # Pacstrap {{{2
-pacstrap /mnt base linux linux-firmware base-devel xorg-server-xwayland sway fish termite \
+pacstrap /mnt base base-devel xorg-server-xwayland sway fish termite \
   ttf-font-awesome waybar rofi \
   htop tree \
   mpv mpd youtube-dl \
@@ -182,7 +182,7 @@ chown -R $USERNAME:users /tmp/life
 rsync -av $_/ /home/$USERNAME/
 rm -rf $_/.git
 rm /etc/in-arch-chroot.sh
-curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path --default-toolchain stable
+curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path --default-toolchain stable -
 
 echo "PARTBOOT: $PARTBOOT"
 echo "PARTROOT: $PARTROOT"

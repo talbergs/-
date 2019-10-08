@@ -5,15 +5,19 @@
 # @dot TODO: rename dot framework related scripts with prefix dot-<action>
 
 INSTALL_SCRIPT=https://raw.githubusercontent.com/talbergs/-/master/.scripts/arch/arch-install
+INSTALL_SCRIPT_SHORT=http://bit.do/fcddW
 DOTFILES=$(tar tf $(archive-home-config))
 
 # @dotdoc-filemarkers @dotdoc-<group?> - append a documentation line to a group
 echo 'Instant rice from Arch installation media:'
 echo '```bash'
-echo $ curl $INSTALL_SCRIPT '>' run.sh
+echo $ curl $INSTALL_SCRIPT -o run.sh
 echo $ bash '$_'
 echo '```'
-echo ''
+echo 'or'
+echo '```bash'
+echo $ curl -sL $INSTALL_SCRIPT_SHOERT '>' a && bash a
+echo '```'
 # echo "${DOTFILES}"
 # ag --vimgrep @dotreadme
 

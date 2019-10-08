@@ -2,10 +2,12 @@
 VIMRUNTIME=$1
 RTP=$2
 GH=https://github.com
+LOG=/tmp/$(basename $0).log
+echo "$(date)" >> $LOG
 
-sleep 1 # take a breath
+sleep 1 # Take a breath for a smoother vim startup.
+
 cd $VIMRUNTIME
-
 IFS=','
 for RT in $RTP;do
     if ! [[ $RT =~ "github" ]]; then
@@ -24,17 +26,14 @@ for RT in $RTP;do
         UPD=$(git log HEAD..origin/$BRANCH --pretty=format:%s)
         if [ ! -z $UPD ];then
             git pull
-            # TODO: make icon and decent view
-            notify-send "[VI-plug] Update received:$REP: $UPD"
+            notify-send "[VI-plug] Update received: $REP" "$UPD"
         fi
     else
         if [ ! -z $BRANCH ]; then
-            git clone --depth=1 --branch=$BRANCH $GH/$REP $DIR
-echo "git clone --depth=1 --branch=$BRANCH $GH/$REP $DIR" >> /tmp/file
+            git clone --depth=1 --branch=$BRANCH $GH/$REP $DIR 2> $LOG
             BRANCH=
         else
-            git clone --depth=1 $GH/$REP $DIR
-echo "git clone --depth=1 $GH/$REP $DIR" >> /tmp/file
+            git clone --depth=1 $GH/$REP $DIR 2> $LOG
         fi
 
         notify-send "[VI-plug] Installed: $REP"
