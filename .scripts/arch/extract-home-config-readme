@@ -16,7 +16,7 @@ echo $ bash '$_'
 echo '```'
 echo 'or'
 echo '```bash'
-echo $ curl -sL $INSTALL_SCRIPT_SHOERT '> a && bash a'
+echo $ curl -sL $INSTALL_SCRIPT_SHORT '> a && bash a'
 echo '```'
 # echo "${DOTFILES}"
 # ag --vimgrep @dotreadme
