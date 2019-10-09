@@ -20,5 +20,3 @@ echo $ curl -sL $INSTALL_SCRIPT_SHORT '> a && bash a'
 echo '```'
 # echo "${DOTFILES}"
 # ag --vimgrep @dotreadme
-
-

@@ -8,9 +8,10 @@
 #clickable_url = true
 #dynamic_title = true
 font = Monospace 11
+font = Source Code Pro 10
 #fullscreen = true
 #icon_name = terminal
-#mouse_autohide = false
+mouse_autohide = true
 #scroll_on_output = false
 #scroll_on_keystroke = true
 # Length of the scrollback buffer, 0 disabled the scrollback buffer
@@ -45,7 +46,10 @@ size_hints = true
 # If both of these are unset, cursor falls back to the foreground color,
 # and cursor_foreground falls back to the background color.
 #cursor = #dcdccc
+cursor = #ff00d7
 #cursor_foreground = #dcdccc
+cursor_foreground = #252525
+
 
 #foreground = #dcdccc
 #foreground_bold = #ffffff

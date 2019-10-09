@@ -24,8 +24,8 @@ fi
 set +e
 
 # Form {{{2
+# @dot TODO: set -e and test this ... ansible?
 # @dot TODO: prompts for swapspace size, wifi or wire setup.
-# @dot TODO: install rustup
 lsblk -Sp
 read -r -p '>> Enter drive: (default: /dev/sda):' DRIVE
 DRIVE=${DRIVE:-/dev/sda}
@@ -73,15 +73,282 @@ mkdir /mnt/boot
 mount $PARTBOOT /mnt/boot
 
 # Pacstrap {{{2
-pacstrap /mnt base base-devel xorg-server-xwayland sway fish termite \
+pacstrap /mnt base linux linux-firmware base-devel xorg-server-xwayland sway fish termite \
   ttf-font-awesome waybar rofi \
   htop tree \
+acl \
+amd-ucode \
+arch-install-scripts \
+archlinux-keyring \
+argon2 \
+attr \
+audit \
+b43-fwcutter \
+bash \
+bc \
+bind-tools \
+broadcom-wl \
+btrfs-progs \
+bzip2 \
+ca-certificates-mozilla \
+ca-certificates-utils \
+clonezilla \
+coreutils \
+cracklib \
+crda \
+cryptsetup \
+curl \
+darkhttpd \
+db \
+dbus \
+ddrescue \
+device-mapper \
+dhclient \
+dhcpcd \
+dialog \
+diffutils \
+ding-libs \
+dmraid \
+dnsmasq \
+dnssec-anchors \
+dosfstools \
+drbl \
+e2fsprogs \
+ecryptfs-utils \
+efibootmgr \
+efitools \
+efivar \
+elinks \
+ethtool \
+exfat-utils \
+expat \
+f2fs-tools \
+file \
+filesystem \
+findutils \
+fsarchiver \
+fuse-common \
+fuse2 \
+fuse3 \
+gawk \
+gc \
+gcc-libs \
+gdbm \
+geoip \
+geoip-database \
+gettext \
+glib2 \
+glibc \
+gmp \
+gnu-netcat \
+gnupg \
+gnutls \
+gpgme \
+gpm \
+gptfdisk \
+grep \
+grml-zsh-config \
+groff \
+grub \
+gssproxy \
+gzip \
+haveged \
+hdparm \
+hicolor-icon-theme \
+hwids \
+iana-etc \
+icu \
+inetutils \
+intel-ucode \
+iproute2 \
+iptables \
+iputils \
+ipw2100-fw \
+ipw2200-fw \
+irssi \
+iw \
+iwd \
+jfsutils \
+json-c \
+kbd \
+keyutils \
+kmod \
+krb5 \
+lbzip2 \
+ldns \
+less \
+lftp \
+libaio \
+libarchive \
+libassuan \
+libatomic_ops \
+libcap \
+libcap-ng \
+libcroco \
+libedit \
+libelf \
+libevent \
+libffi \
+libgcrypt \
+libgpg-error \
+libidn \
+libidn2 \
+libjpeg-turbo \
+libksba \
+libldap \
+libmnl \
+libnetfilter_conntrack \
+libnewt \
+libnfnetlink \
+libnftnl \
+libnghttp2 \
+libnl \
+libnsl \
+libotr \
+libpcap \
+libpipeline \
+libproxy \
+libpsl \
+libsasl \
+libseccomp \
+libsecret \
+libssh2 \
+libtasn1 \
+libtirpc \
+libunistring \
+libusb \
+libutil-linux \
+libxml2 \
+licenses \
+linux \
+linux-api-headers \
+linux-atm \
+linux-firmware \
+lmdb \
+logrotate \
+lrzip \
+lsscsi \
+lua \
+lua51 \
+lvm2 \
+lz4 \
+lzo \
+lzop \
+man-db \
+man-pages \
+mc \
+mdadm \
+memtest86+ \
+mkinitcpio \
+mkinitcpio-busybox \
+mkinitcpio-nfs-utils \
+mpfr \
+mtools \
+nano \
+nbd \
+ncurses \
+ndisc6 \
+net-tools \
+netctl \
+nettle \
+nfs-utils \
+nfsidmap \
+nilfs-utils \
+nmap \
+npth \
+nspr \
+nss \
+ntfs-3g \
+ntp \
+openconnect \
+openresolv \
+openssh \
+openssl \
+openssl-1.0 \
+openvpn \
+p11-kit \
+pacman \
+pacman-mirrorlist \
+pam \
+pambase \
+partclone \
+parted \
+partimage \
+pbzip2 \
+pciutils \
+pcre \
+pcre2 \
+pcsclite \
+perl \
+pigz \
+pinentry \
+pixz \
+pkcs11-helper \
+popt \
+ppp \
+pptpclient \
+procps-ng \
+progsreiserfs \
+psmisc \
+python \
+readline \
+refind-efi \
+reiserfsprogs \
+rp-pppoe \
+rpcbind \
+rsync \
+s-nail \
+screen \
+sdparm \
+sed \
+sg3_utils \
+shadow \
+slang \
+smartmontools \
+sqlite \
+sshfs \
+stoken \
+sudo \
+sysfsutils \
+syslinux \
+systemd \
+systemd-libs \
+systemd-sysvcompat \
+tar \
+tcl \
+tcpdump \
+testdisk \
+texinfo \
+thin-provisioning-tools \
+tre \
+tzdata \
+usb_modeswitch \
+usbutils \
+util-linux \
+vi \
+vim \
+vim-runtime \
+vpnc \
+wget \
+which \
+wireless-regdb \
+wireless_tools \
+wpa_supplicant \
+wvdial \
+wvstreams \
+xfsprogs \
+xl2tpd \
+xplc \
+xz \
+zlib \
+zsh \
+zstd \
   mpv mpd youtube-dl \
   neovim wl-clipboard nodejs npm the_silver_searcher fzf \
   alsa-utils pulseaudio pavucontrol pulsemixer \
   chromium docker openssh git rsync wpa_supplicant dialog \
   archlinux-keyring libnotify hub cronie brightnessctl \
-  transmission-gtk watchexec
+  transmission-gtk dunst mako
 
 # Fstab {{{2
 genfstab -U -p /mnt > /mnt/etc/fstab
@@ -97,7 +364,6 @@ sed -i "s#USERPW_#USERPW=\"$USERPW\"#" /mnt/etc/in-arch-chroot.sh
 sed -i "s#ROOTPW_#ROOTPW=\"$ROOTPW\"#" /mnt/etc/in-arch-chroot.sh
 sed -i "s#CRYPTPW_#CRYPTPW=\"$CRYPTPW\"#" /mnt/etc/in-arch-chroot.sh
 chmod +x /mnt/etc/in-arch-chroot.sh
-# @dot TODO: mirrorlist dir not install
 # @dot TODO: pacman conf set Color VerbosePkgLists CheckSpace ILoveCandy
 cat /etc/pacman.d/mirrorlist > /mnt/etc/pacman.d/mirrorlist
 arch-chroot /mnt /bin/bash -c "su - -c /etc/in-arch-chroot.sh"
@@ -182,7 +448,7 @@ chown -R $USERNAME:users /tmp/life
 rsync -av $_/ /home/$USERNAME/
 rm -rf $_/.git
 rm /etc/in-arch-chroot.sh
-curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path --default-toolchain stable -
+curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path --default-toolchain stable
 
 echo "PARTBOOT: $PARTBOOT"
 echo "PARTROOT: $PARTROOT"
