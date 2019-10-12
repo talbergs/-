@@ -32,6 +32,7 @@ se rtp+=$VIMRUNTIME/github/tpope/vim-repeat
 " {{{2 Mundo
 " requires python3
 se rtp+=$VIMRUNTIME/github/simnalamburt/vim-mundo
+se rtp+=$VIMRUNTIME/github/sheerun/vim-polyglot
 
 " {{{2 vDebug
 " requires python3
@@ -102,6 +103,8 @@ nn <unique><silent> <leader>* :let @/ = '\<' . expand('<cword>') . '\>' <bar> se
 se pumblend=7
 
 nn <unique><expr> <f2> util#verbose_buf()
+nn <unique> <f1> :vsp $VIMRUNTIME/init.vim<cr>
+
 " Go back to last misspelled word and pick first suggestion while typing.
 " TODO: take next and next suggestion by repeated press
 ino <c-l> <c-g>u<esc>[s1z=`]a<c-g>u
@@ -110,6 +113,5 @@ se tal=%!framework#tabline()
 se stl=%!framework#statusline()
 
 cal jobstart('vide-plug '.$VIMRUNTIME.' '.&rtp.' &')
-" AUfiles {{{1
 
 " vim: fdm=marker fdc=3

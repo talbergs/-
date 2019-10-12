@@ -1,6 +1,0 @@
-#!/bin/bash
-if [ -z $(swaymsg -t get_inputs | ag apostrophe) ];then
-    swaymsg input "*" xkb_layout "lv(apostrophe)"
-else
-    swaymsg input "*" xkb_layout "us"
-fi

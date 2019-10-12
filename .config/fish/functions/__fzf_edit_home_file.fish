@@ -1,7 +1,8 @@
 # @dotfile
-function __fzf_edit_file
 
-    find -type f \
+function __fzf_edit_home_file
+
+    find $HOME -type f \
     | ag "[\/]?(share|\.rustup|\.npm|\.git|node_modules|chromium|.cache)\/" --invert-match \
     | fzf -m \
     | while read -l s; set results $results $s; end
@@ -11,5 +12,6 @@ function __fzf_edit_file
         return
     end
 
-    $EDITOR $results
+    commandline -r "$EDITOR $results"
+    commandline -f execute
 end

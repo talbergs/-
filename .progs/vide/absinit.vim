@@ -29,3 +29,5 @@ se nosm
 se si
 " Use silent! to avoid potential E11 if the command-line window is open.
 au FocusGained * sil! checkt
+" common
+se et ts=4

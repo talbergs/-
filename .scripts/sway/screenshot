@@ -1,0 +1,42 @@
+#!/bin/bash
+# @dotfile
+# @dotdep pinta slurp grim
+set +e
+
+[[ $1 == -h ]] && zbx.-h "$0" && exit
+
+dir=~/Images/screenshots
+mkdir -p $dir 2> /dev/null
+
+while [[ "$#" > 0 ]]; do case $1 in
+    #- copy in primary clipboard
+    -C | --clip) _clip=1;;
+    #- oepn image in editor
+    -E | --edit) _edit=1;;
+    #- use selected region
+    -S | --select) _select=1;;
+    #- Open editot to update this stcipt.
+    -ED) $EDITOR $0; exit 0;;
+    *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
+name="$(date +"%Y-%m-%d_%H-%M-%S")"
+image=$dir/$name.png
+
+[ ! -z $_select ] && (
+    slurp | grim -g - $image
+) || (
+    grim $image
+)
+
+[ ! -z $_clip ] && (
+    pinta $image
+)
+
+[ ! -z $_edit ] && (
+    pinta $image
+)
+
+notify-send $image
+
+echo -n $image

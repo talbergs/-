@@ -4,12 +4,12 @@ set $mod Mod4
 set $alt Mod1
 set $term $TERMINAL
 set $browser $BROWSER
-set $lock ~/.local/bin/scripts/lock.sh
+set $lock ~/.scripts/sway/lock
 set $power ~/.config/rofi/modi/power
 set $wifi ~/.config/rofi/modi/nmcli
 set $menu rofi -show drun
-set $screenshot grim ~/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
-set $screenclip slurp | grim -g - ~/Images/screenshots/scrn-$(date +"%Y-%m-%d-%H-%M-%S").png
+set $screenshot ~/.scripts/sway/screenshot --edit
+set $screenclip ~/.scripts/sway/screenshot --select --edit
 
 # colors {{{2
 set $cl_high #009ddc
@@ -52,11 +52,9 @@ bindsym $mod+$alt+Tab workspace prev
 
 # Autostart {{{1
 exec --no-startup-id mako
-exec --no-startup-id redshift -c ~/.config/redshift/config
-exec mailspring
 exec riot
-exec --no-startup-id nextcloud
-exec --no-startup-id libinput-gestures
+# exec --no-startup-id pcloud
+# exec --no-startup-id libinput-gestures
 
 # Input configuration {{{1
 # https://manpages.debian.org/experimental/sway/sway-input.5.en.html
@@ -75,8 +73,8 @@ input * {
 
 # Shortcuts {{{1
 bindsym $mod+Return exec $term
-bindsym $mod+Print exec $screenshot
-bindsym $mod+Shift+Print exec $screenclip
+bindsym $mod+F11 exec $screenshot
+bindsym $mod+Shift+F11 exec $screenclip
 bindsym $mod+d exec $menu
 
 bindsym $mod+Shift+q kill
@@ -97,9 +95,6 @@ bindsym Control+Space exec makoctl dismiss
 bindsym --locked XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') +5%
 bindsym --locked XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') -5%
 bindsym --locked XF86AudioMute exec --no-startup-id pactl set-sink-mute $(pacmd list-sinks |awk '/* index:/{print $3}') toggle
-bindsym --locked XF86AudioPlay exec playerctl play-pause
-bindsym --locked XF86AudioNext exec playerctl next
-bindsym --locked XF86AudioPrev exec playerctl previous
 bindsym --locked XF86MonBrightnessUp exec --no-startup-id sudo brightnessctl set 5%+
 bindsym --locked XF86MonBrightnessDown exec --no-startup-id sudo brightnessctl set 5%-
 
@@ -108,7 +103,7 @@ bindsym $mod+Home exec --no-startup-id pkill -USR1 redshift
 
 # Idle configuration {{{1
 exec swayidle \
-    timeout 300 'exec $lock' \
+    timeout 300 'exec $loswayidleck' \
     timeout 600 'swaymsg "output * dpms off"' \
     after-resume 'swaymsg "output * dpms on"' \
     before-sleep 'exec $lock'
@@ -149,7 +144,9 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
+# FLOAT BECAUSE OF TITLE {{{2
 for_window [title="Volume Control"] floating enable
+for_window [title="wttr.in"] floating enable;resize set width 1200px;resize set height 900px
 
 # switch to workspace {{{1
 bindsym $mod+1   workspace $ws1
@@ -188,6 +185,8 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 bindsym $mod+o sticky toggle
 
+bindsym $mod+Shift+x exec $lock
+
 # move focus to the parent container
 bindsym $mod+a focus parent
 
@@ -212,6 +211,8 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 bindsym $mod+Shift+Return mode "$mode_system"
+# @dotdoc-keybindings `mod+F12` to cycle through available keyboard layouts.
+bindsym $mod+F12 exec keyboard-layout next; pkill -SIGRTMIN+8 waybar
 
 exec_always ~/.config/waybar/waybar.sh
 

@@ -1,2 +1,0 @@
-#!/bin/bash
-beep -f 2000 -l 20 -r 1

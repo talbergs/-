@@ -1,4 +1,5 @@
 # @dotfile
+
 function __fzf_reverse_isearch
     history merge
     history -z \

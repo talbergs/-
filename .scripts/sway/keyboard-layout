@@ -1,0 +1,18 @@
+#!/bin/bash
+if [[ -z $(swaymsg -t get_inputs | ag apostrophe) ]];then
+    cur=en
+else
+    cur=lv
+fi
+
+if [[ $1 == next ]];then
+    if [[ $cur == lv ]];then
+        swaymsg input "*" xkb_layout "us"
+    else
+        swaymsg input "*" xkb_layout "lv(apostrophe)"
+    fi
+    pkill -SIGRTMIN+8 waybar
+    exit 0
+fi
+
+echo -n $cur

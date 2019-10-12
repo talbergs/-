@@ -6,7 +6,7 @@
 
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["tray", "custom/spotify", "custom/weather", "custom/mail", "custom/storage", "backlight", "pulseaudio", "network", "idle_inhibitor", "battery", "clock"],
+    "modules-right": ["tray", "custom/weather", "custom/mail", "custom/storage", "pulseaudio", "network", "battery", "custom/keyboard", "clock"],
     "sway/mode": {
         "format": " {}"
     },
@@ -15,11 +15,14 @@
         "disable-scroll": true
     },
     "sway/window": {
+        "format": "{}",
         "max-length": 80,
         "tooltip": false
     },
     "clock": {
         "format": "{:%a %d %b %H:%M}",
+        "format-alt": "{:%a %d %b %H:%M:%S}",
+        "interval": 1,
         "tooltip": false
     },
     "battery": {
@@ -44,7 +47,7 @@
             "disconnected": ["X"]
         },
         "on-click": "termite -e nmtui",
-    "tooltip": false
+        "tooltip": false
     },
     "pulseaudio": {
         "format": "{icon}",
@@ -59,13 +62,6 @@
         "on-click": "pavucontrol",
         "tooltip": false
     },
-    "custom/spotify": {
-        "interval": 1,
-        "return-type": "json",
-        "exec": "~/.config/waybar/modules/spotify.sh",
-        "exec-if": "pgrep spotify",
-        "escape": true
-    },
     "custom/storage": {
         "format": "{} ",
         "format-alt": "{percentage}% ",
@@ -74,14 +70,6 @@
         "interval": 60,
         "exec": "~/.config/waybar/modules/storage.sh"
     },
-    "backlight": {
-        "format": "{icon}",
-        "format-alt": "{percent}% {icon}",
-        "format-alt-click": "click-right",
-        "format-icons": ["", ""],
-        "on-scroll-down": "light -A 1",
-        "on-scroll-up": "light -U 1"
-    },
     "custom/weather": {
         "format": "{}",
         "format-alt": "{alt}: {}",
@@ -89,30 +77,16 @@
         "interval": 1800,
         "return-type": "json",
         "exec": "~/.config/waybar/modules/weather.sh",
+        "on-click": "$TERMINAL -e 'curl wttr.in' --hold --title 'wttr.in'",
         "exec-if": "ping wttr.in -c1"
     },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        },
+    "custom/keyboard": {
+        "format": " {}  ",
+        "exec": "keyboard-layout",
+        "on-click": "keyboard-layout next; pkill -SIGRTMIN+8 waybar",
+        "interval": "once",
+        "signal": 8,
         "tooltip": false
-    },
-    "custom/mail": {
-        "format": "",
-        "format-alt": "{alt} ",
-        "format-alt-click": "click-right",
-        "interval": 60,
-        "return-type": "json",
-        "exec": "~/.config/waybar/modules/mail.py",
-        "tooltip": false
-    },
-    "custom/test": {
-        "format": "{}",
-        "exec": "/tmp/test blub",
-        "param": "blah",
-        "interval": 5
     },
     "tray": {
         "icon-size": 18

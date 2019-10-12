@@ -30,10 +30,10 @@ for RT in $RTP;do
         fi
     else
         if [ ! -z $BRANCH ]; then
-            git clone --depth=1 --branch=$BRANCH $GH/$REP $DIR 2> $LOG
+            git clone --depth=1 --branch=$BRANCH $GH/$REP $DIR 2>> $LOG
             BRANCH=
         else
-            git clone --depth=1 $GH/$REP $DIR 2> $LOG
+            git clone --depth=1 $GH/$REP $DIR 2>> $LOG
         fi
 
         notify-send "[VI-plug] Installed: $REP"

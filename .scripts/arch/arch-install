@@ -31,12 +31,13 @@ read -r -p '>> Enter drive: (default: /dev/sda):' DRIVE
 DRIVE=${DRIVE:-/dev/sda}
 PARTBOOT=$DRIVE\1
 PARTROOT=$DRIVE\2
-read -r -p ">> (1/5) Enter username: " USERNAME
-read -r -p ">> (2/5) Enter hostname: " HOSTNAME
+read -r -p ">> (1/6) Enter username: " USERNAME
+read -r -p ">> (2/6) Enter hostname: " HOSTNAME
 echo "$(tput bold)Caution! Following prompts has no confirmation and no echo.$(tput sgr0)"
-read -s -r -p ">> (3/5) Enter 'root' password: " ROOTPW;echo
-read -s -r -p ">> (4/5) Enter '$USERNAME' password: " USERPW;echo
-read -s -r -p ">> (5/5) Enter disk encryption passphrase: " CRYPTPW;echo
+read -s -r -p ">> (3/6) Enter 'root' password: " ROOTPW;echo
+read -s -r -p ">> (4/6) Enter '$USERNAME' password: " USERPW;echo
+read -s -r -p ">> (5/6) Enter disk encryption passphrase: " CRYPTPW;echo
+read -s -r -p ">> (6/6) Enter passphrase for ~/.ssh/id_rsa: " SSHPW;echo
 echo
 echo "$(tput bold)THATS IT! come back in approx 15 minutes$(tput sgr0)"
 echo
@@ -45,7 +46,7 @@ echo
 pacman -Sy --noconfirm archlinux-keyring
 (( $(cat /etc/pacman.d/mirrorlist | wc -l) > 10 )) && (
 echo ">> Ranking top 5 fastest mirrors..." 
-which rankmirrors &>null || pacman -Sy --noconfirm --needed pacman-contrib &>null
+which rankmirrors &>/dev/null || pacman -Sy --noconfirm --needed pacman-contrib &>/dev/null
 curl -s "https://www.archlinux.org/mirrorlist/?protocol=https&use_mirror_status=on&country=LV&country=GB&country=DE" \
     | sed 's/^#//' | sed '/^#/d' \
     | rankmirrors -n 5 - > /etc/pacman.d/mirrorlist
@@ -140,7 +141,6 @@ gettext \
 glib2 \
 glibc \
 gmp \
-gnu-netcat \
 gnupg \
 gnutls \
 gpgme \
@@ -348,7 +348,7 @@ zstd \
   alsa-utils pulseaudio pavucontrol pulsemixer \
   chromium docker openssh git rsync wpa_supplicant dialog \
   archlinux-keyring libnotify hub cronie brightnessctl \
-  transmission-gtk dunst mako
+  transmission-gtk dunst mako openbsd-netcat swaylock grim
 
 # Fstab {{{2
 genfstab -U -p /mnt > /mnt/etc/fstab
@@ -363,6 +363,8 @@ sed -i "s#USERNAME_#USERNAME=\"$USERNAME\"#" /mnt/etc/in-arch-chroot.sh
 sed -i "s#USERPW_#USERPW=\"$USERPW\"#" /mnt/etc/in-arch-chroot.sh
 sed -i "s#ROOTPW_#ROOTPW=\"$ROOTPW\"#" /mnt/etc/in-arch-chroot.sh
 sed -i "s#CRYPTPW_#CRYPTPW=\"$CRYPTPW\"#" /mnt/etc/in-arch-chroot.sh
+sed -i "s#SSHPW_#SSHPASS=\"$SSHPASS\"#" /mnt/etc/in-arch-chroot.sh
+
 chmod +x /mnt/etc/in-arch-chroot.sh
 # @dot TODO: pacman conf set Color VerbosePkgLists CheckSpace ILoveCandy
 cat /etc/pacman.d/mirrorlist > /mnt/etc/pacman.d/mirrorlist
@@ -381,12 +383,29 @@ USERNAME_
 ROOTPW_
 USERPW_
 CRYPTPW_
+SSHPW_
 
 # Locale, Timezones {{{2
-printf "en_US.UTF-8 UTF-8
-lv_LV.UTF-8 UTF-8" > /etc/locale.gen
-echo LANG=lv_LV.UTF-8 > /etc/locale.conf
+echo en_US.UTF-8 UTF-8 > /etc/locale.gen
+echo lv_LV.UTF-8 UTF-8 >> /etc/locale.gen
+
+echo LANG=en_US.UTF-8              >  /etc/locale.conf
+echo LANGUAGE=en_US.UTF-8          >> /etc/locale.conf
+echo LC_ADDRESS=en_US.UTF-8        >> /etc/locale.conf
+echo LC_COLLATE=en_US.UTF-8        >> /etc/locale.conf
+echo LC_CTYPE=en_US.UTF-8          >> /etc/locale.conf
+echo LC_IDENTIFICATION=en_US.UTF-8 >> /etc/locale.conf
+echo LC_MEASUREMENT=en_US.UTF-8    >> /etc/locale.conf
+echo LC_MESSAGES=en_US.UTF-8       >> /etc/locale.conf
+echo LC_MONETARY=en_US.UTF-8       >> /etc/locale.conf
+echo LC_NAME=en_US.UTF-8           >> /etc/locale.conf
+echo LC_NUMERIC=en_US.UTF-8        >> /etc/locale.conf
+echo LC_PAPER=en_US.UTF-8          >> /etc/locale.conf
+echo LC_TELEPHONE=en_US.UTF-8      >> /etc/locale.conf
+echo LC_TIME=lv_LV.UTF-8           >> /etc/locale.conf
+
 export LANG=en_US.UTF-8
+
 locale-gen
 ln -sf /usr/share/zoneinfo/Europe/Riga /etc/localtime
 hwclock --systohc --utc
@@ -442,13 +461,20 @@ HOOKS=(base udev autodetect modconf block encrypt filesystems keyboard fsck)" \
 > /etc/mkinitcpio.conf
 mkinitcpio -p linux # here if fs2fs is used is checked or errors
 
+# ssh, gpg {{{2
+ssh-keygen -N $SSHPW -f ~/.ssh/id_rsa
+
 # Dotfiles topping {{{2
 git clone --depth 1 https://github.com/talbergs/- /tmp/life
 chown -R $USERNAME:users /tmp/life
 rsync -av $_/ /home/$USERNAME/
 rm -rf $_/.git
 rm /etc/in-arch-chroot.sh
-curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path --default-toolchain stable
+curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path --default-toolchain stable
+npm i intelephence -g
+
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
 
 echo "PARTBOOT: $PARTBOOT"
 echo "PARTROOT: $PARTROOT"
