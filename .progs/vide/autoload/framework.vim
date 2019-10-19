@@ -26,9 +26,9 @@ fun framework#statusline_v()
     let b:stl_1=function('framework#epmty_fun')
   en
 
-  let s='%(%#TabLineSel#%% %-4p%=%)'
-  let s.='%#Constant#%m%r %f %#Keyword#'
-  let s.='%{b:stl_1()}%#TabLine#'
+  let s='%(%#StatusLine#%% %-4p%=%)'
+  let s.='%#StatusLineS0#%m%r %f %#StatusLineS1#'
+  let s.='%{b:stl_1()}%#StatusLine#'
   let s.='%{coc#status()}'
   let s.='%=[col:%03v]'
   retu s
@@ -43,11 +43,11 @@ fun framework#statusline()
     let b:stl_1=function('framework#epmty_fun')
   en
 
-  let s='%(%#TabLineSel#%% %-4p%=%)'
-  let s.='%#Constant#%m%r %t %#Keyword#'
+  let s='%(%#StatusLine#%% %-4p%=%)'
+  let s.='%#StatusLineS0#%m%r %t %#StatusLineS1#'
   let s.='%{b:stl_1()}%#TabLine#'
-  let s.='%{coc#status()}'
-  let s.='%=[col:%03v]'
+  let s.='%=%{coc#status()}'
+  let s.='[col:%03v]'
   retu s
 endf
 

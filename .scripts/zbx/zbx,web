@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [ -z $1 ]; then
-    $BROWSER "$(zbx.resolve --web-url)"
-fi
-
-if [[ $1 == tests ]]; then
-    $BROWSER "$(zbx.resolve --web-api-test-url)"
-fi

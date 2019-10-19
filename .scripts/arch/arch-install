@@ -49,7 +49,7 @@ echo ">> Ranking top 5 fastest mirrors..."
 which rankmirrors &>/dev/null || pacman -Sy --noconfirm --needed pacman-contrib &>/dev/null
 curl -s "https://www.archlinux.org/mirrorlist/?protocol=https&use_mirror_status=on&country=LV&country=GB&country=DE" \
     | sed 's/^#//' | sed '/^#/d' \
-    | rankmirrors -n 5 - > /etc/pacman.d/mirrorlist
+    | rankmirrors -n 35 - > /etc/pacman.d/mirrorlist
 )
 
 # Make partitions {{{2
@@ -348,7 +348,8 @@ zstd \
   alsa-utils pulseaudio pavucontrol pulsemixer \
   chromium docker openssh git rsync wpa_supplicant dialog \
   archlinux-keyring libnotify hub cronie brightnessctl \
-  transmission-gtk dunst mako openbsd-netcat swaylock grim
+  transmission-gtk dunst mako openbsd-netcat swaylock grim entr \
+  ctags
 
 # Fstab {{{2
 genfstab -U -p /mnt > /mnt/etc/fstab

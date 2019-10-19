@@ -25,7 +25,7 @@ if test -d ~/.progs
   set -pgx PATH (du ~/.progs | cut -f2 | grep '/bin$')
 end
 
-# Global path preppend every folder in ~/.scripts
+# Rust binaries
 if test -d ~/.cargo/bin
   set -pgx PATH $HOME/.cargo/bin
 end
@@ -33,6 +33,11 @@ end
 # Global path preppend every folder in ~/.scripts
 if test -d ~/.scripts
   set -pgx PATH (du $HOME/.scripts | cut -f2)
+end
+
+# Dev-box binaries
+if test -d ~/.zbx-box/bin
+  set -pgx PATH $HOME/.zbx-box/bin
 end
 
 # ssh {{{1

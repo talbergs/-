@@ -52,6 +52,12 @@ bindsym $mod+$alt+Tab workspace prev
 
 # Autostart {{{1
 exec --no-startup-id mako
+# if no clipman:
+# service:  wl-paste -w wl-paste -p >> /tmp/a
+# menu:     tac /tmp/a | rofi -dmenu | wl-copy
+exec wl-paste -t text --watch clipman store
+# @dottodo https://github.com/francma/wob
+bindsym $mod+c exec clipman pick
 exec riot
 # exec --no-startup-id pcloud
 # exec --no-startup-id libinput-gestures
@@ -102,11 +108,12 @@ bindsym --locked XF86MonBrightnessDown exec --no-startup-id sudo brightnessctl s
 bindsym $mod+Home exec --no-startup-id pkill -USR1 redshift
 
 # Idle configuration {{{1
-exec swayidle \
-    timeout 300 'exec $loswayidleck' \
-    timeout 600 'swaymsg "output * dpms off"' \
-    after-resume 'swaymsg "output * dpms on"' \
-    before-sleep 'exec $lock'
+# @dottodo Broken swayidle
+# exec swayidle \
+#     timeout 300 'exec $loswayidleck' \
+#     timeout 600 'swaymsg "output * dpms off"' \
+#     after-resume 'swaymsg "output * dpms on"' \
+#     before-sleep 'exec $lock'
 
 # FOCUS, RESIZE, MOVE {{{1
 # FOCUS {{{2

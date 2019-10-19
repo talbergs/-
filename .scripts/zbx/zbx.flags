@@ -31,6 +31,7 @@ function testLine() {
         *create/src/schema.tmpl*) Installation ;;
         *ChangeLog.d/*) Documentation ;;
         *create/src/*) Templates ;;
+        *templates/*) Templates ;;
         # TODO all
     esac
 }
