@@ -56,7 +56,7 @@ se rtp+=$VIMRUNTIME/github/sheerun/vim-polyglot
 set rtp+=$VIMRUNTIME/github/neoclide/coc.nvim:release
 set rtp+=$VIMRUNTIME/github/neoclide/coc.nvim
 let g:coc_global_extensions = [
-\'coc-lists', 'coc-yank', 'coc-json', 'coc-highlight', 'coc-css', 'coc-snippets', 'coc-git', 'coc-tsserver',
+\'coc-lists', 'coc-yank', 'coc-json', 'coc-css', 'coc-snippets', 'coc-git', 'coc-tsserver',
 \'coc-html', 'coc-emmet', 'coc-rls', 'coc-ccls']
 nn <unique><silent> <c-space> :call CocAction('doHover')<cr>
 nn <unique><silent> gd :call CocAction('jumpDefinition')<cr>
@@ -84,22 +84,24 @@ nm <unique><silent> <a-n> <plug>(filetree-toggle)
 nm <unique><silent> <a-N> <plug>(filetree-focus)
 
 " {{{1 ALT-ernating
+" Alt + - quickfix next prev | < + shift > file-wise next/prev
 nn <unique><silent> <a-=> :cnext<cr>
+nn <unique><silent> <a-+> :cnf<cr>
 nn <unique><silent> <a--> :cprev<cr>
-nn <unique><silent> <a-0> :cclose<cr>
+nn <unique><silent> <a-_> :cpf<cr>
 
 nn <unique><silent> <a-]> :lnext<cr>
 nn <unique><silent> <a-[> :lprev<cr>
-nn <unique><silent> <a-\> :lclose<cr>
 
 nn <unique><silent> <a-j> :tabprev<cr>
 nn <unique><silent> <a-k> :tabnext<cr>
+nn <unique><silent> <a-J> :-tabmove<cr>
+nn <unique><silent> <a-K> :+tabmove<cr>
 
 " {{{1 VERY-BAD-habbits
 nn <unique><silent> !!q :cq<cr>
 nn <unique><silent> <leader>w :silent! w<cr>
 nn <unique><silent> <leader>W :silent! wrap!<cr>
-nn <unique><silent> <leader>, :nohl<cr>
 vn <unique><silent> <c-j> 10j
 vn <unique><silent> <c-k> 10k
 nn <unique><silent> <c-j> 10j
@@ -111,10 +113,7 @@ nn <unique><silent> <c-right> 10<c-w>>
 nn <unique><silent> <c-left> 10<c-w><
 nn <unique><silent> <c-up> 10<c-w>+
 nn <unique><silent> <c-down> 10<c-w>-
-nn <unique><silent> <leader>* :let @/ = '\<' . expand('<cword>') . '\>' <bar> set hlsearch<cr>
 " }}}
-
-se pumblend=7
 
 nn <unique><expr> <f2> util#verbose_buf()
 nn <unique> <f1> :vsp $VIMRUNTIME/init.vim<cr>
