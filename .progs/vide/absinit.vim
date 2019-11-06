@@ -31,3 +31,5 @@ se si
 au FocusGained * sil! checkt
 " common
 se et ts=4
+" winblend
+se winbl=20

@@ -15,4 +15,11 @@ if [[ $1 == next ]];then
     exit 0
 fi
 
-echo -n $cur
+if [[ $cur == lv ]];then
+    echo '{ "text": "lv", "class": "lv"}'
+else
+    echo '{ "text": "en" }'
+fi
+
+
+# echo -n $cur

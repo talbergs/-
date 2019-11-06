@@ -72,5 +72,8 @@ abbr -a -g .fish $EDITOR ~/.config/fish/config.fish
 abbr -a -g .i3 $EDITOR ~/.config/i3/config
 abbr -a -g .vim $EDITOR ~/.config/nvim/init.vim
 abbr -a -g .sway $EDITOR ~/.config/sway/config
+abbr -a -g .waybar $EDITOR ~/.config/waybar/config
+abbr -a -g .termite $EDITOR ~/.config/termite/config
+abbr -a -g .vide $EDITOR ~/.progs/vide/init.vim
 
 # vim: fdm=marker ft=sh

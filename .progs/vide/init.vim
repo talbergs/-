@@ -21,7 +21,21 @@ se rtp+=$VIMRUNTIME/github/junegunn/fzf.vim
 nn <unique><silent> t :BTags<cr>
 nn <unique><silent> <leader>f :Files<cr>
 nn <unique><silent> <leader>b :Buffers<cr>
-nn <unique><silent> <leader>F :<c-u>execute 'Rg '.expand('<cword>')<cr>
+nn <unique><silent> <leader>F :<c-u>execute 'Ag '.expand('<cword>')<cr>
+let $FZF_DEFAULT_OPTS=' --margin=0,4 --border'
+let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+
+function! FloatingFZF()
+  let width = float2nr(&columns * 0.8)
+  let height = float2nr(&lines * 0.6)
+  let opts = { 'relative': 'editor',
+             \ 'row': (&lines - height) / 2,
+             \ 'col': (&columns - width) / 2,
+             \ 'width': width,
+             \ 'height': height }
+
+  call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+endfunction
 
 " {{{2 pope
 se rtp+=$VIMRUNTIME/github/tpope/vim-commentary

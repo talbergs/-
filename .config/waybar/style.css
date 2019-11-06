@@ -70,3 +70,11 @@ window#waybar.solo {
 #custom-storage.critical {
     color:      rgba(238, 46, 36, 1);
 }
+
+#custom-keyboard {
+    color:      rgba(217, 216, 216, 1);
+}
+
+#custom-keyboard.lv {
+    color:      rgba(255, 210, 4, 1);
+}

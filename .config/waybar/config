@@ -81,7 +81,8 @@
         "exec-if": "ping wttr.in -c1"
     },
     "custom/keyboard": {
-        "format": " {}  ",
+        "format": "{}",
+        "return-type": "json",
         "exec": "keyboard-layout",
         "on-click": "keyboard-layout next; pkill -SIGRTMIN+8 waybar",
         "interval": "once",

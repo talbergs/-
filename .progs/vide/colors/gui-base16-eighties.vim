@@ -93,6 +93,7 @@ cal Hi('PMenuSel',                 g:hi01, g:hi05, '',          '')
 cal Hi('TabLine',                  g:hi03, g:hi01, 'none',      'none')
 cal Hi('TabLineFill',              g:hi03, g:hi01, 'none',      'none')
 cal Hi('TabLineSel',               g:hi0B, g:hi01, 'none',      '')
+cal Hi('NormalFloat',              'none', 'none', 'none',      '')
 
 " Standard syntax highlighting {{{1
 cal Hi('Boolean',                  g:hi09, '',     '',          '')
