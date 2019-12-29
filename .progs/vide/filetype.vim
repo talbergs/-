@@ -32,7 +32,7 @@ aug ftdetect
   au BufNewFile,BufRead *.rs     setf rust
   au BufNewFile,BufRead *.c      setf c
   au BufNewFile,BufRead crontab  setf crontab
-  au BufNewFile,BufRead schema.tmpl      setf sql
+  au BufNewFile,BufRead .vimrc   setf vim
   au BufNewFile,BufRead COMMIT_EDITMSG   setf gitcommit
   au BufNewFile,BufRead git-rebase*   setf gitrebase
 

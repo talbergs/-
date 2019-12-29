@@ -33,3 +33,5 @@ au FocusGained * sil! checkt
 se et ts=4
 " winblend
 se winbl=20
+" Inccommand preview works for :substitute, :smagic, :snomagic.
+se icm=nosplit
