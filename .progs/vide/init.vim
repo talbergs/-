@@ -11,6 +11,9 @@ colo gui-base16-eighties
 
 " {{{1 PLUGINS
 
+" {{{2 firnvim
+se rtp+=$VIMRUNTIME/github/glacambre/firenvim
+
 " {{{2 vim-easy-align, hlsearch
 se rtp+=$VIMRUNTIME/github/junegunn/vim-easy-align
 xm ga <plug>(EasyAlign)

@@ -27,6 +27,7 @@ aug ftdetect
   au BufNewFile,BufRead *.scss   setf scss
   au BufNewFile,BufRead *.json   setf json
   au BufNewFile,BufRead *.html   setf html
+  au BufNewFile,BufRead *.toml   setf toml
   au BufNewFile,BufRead *.sh     setf sh
   au BufNewFile,BufRead *.rs     setf rust
   au BufNewFile,BufRead *.c      setf c

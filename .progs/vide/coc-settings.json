@@ -32,6 +32,5 @@
     ".projections.json",
     "zabbix.php"
   ],
-  "git.enableGutters": true,
-  "git.addGBlameToVirtualText": true
+  "git.enableGutters": true
 }

@@ -2,11 +2,11 @@
 {
     "layer": "bottom",
     "position": "top",
-    "height": 24,
+    "height": 30,
 
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["tray", "custom/mail", "pulseaudio", "network", "battery", "custom/keyboard", "clock"],
+    "modules-right": ["tray", "custom/mail", "custom/storage", "pulseaudio", "network", "battery", "custom/keyboard", "clock"],
     "sway/mode": {
         "format": " {}"
     },
@@ -43,6 +43,7 @@
         "format-alt-click": "click-right",
         "format-icons": {
             "wifi": [""],
+            "ethernet": [""],
             "disconnected": ["X"]
         },
         "on-click": "termite -e nmtui",
@@ -68,16 +69,6 @@
         "return-type": "json",
         "interval": 60,
         "exec": "~/.config/waybar/modules/storage.sh"
-    },
-    "custom/weather": {
-        "format": "{}",
-        "format-alt": "{alt}: {}",
-        "format-alt-click": "click-right",
-        "interval": 1800,
-        "return-type": "json",
-        "exec": "~/.config/waybar/modules/weather.sh",
-        "on-click": "$TERMINAL -e 'curl wttr.in' --hold --title 'wttr.in'",
-        "exec-if": "ping wttr.in -c1"
     },
     "custom/keyboard": {
         "format": "{}",
