@@ -27,6 +27,6 @@ else
 	echo "}}}2" 1>&2
 
 	git add .
-	git commit -m "automated commit $(date +"%d-%m-%Y %H:%I")"
+	git commit -m "automated commit $(date +"[%d-%m-%Y] %H:%I")"
 	git push
 fi
