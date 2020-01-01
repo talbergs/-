@@ -3,7 +3,7 @@
 # @dotdep grim corrupter swaylock
 
 images=()
-swaylock_args=()
+swaylock_args=(--daemonize)
 
 for output in $(swaymsg -t get_outputs | jq -r '.[] .name'); do
   image=$(mktemp --suffix=.png)
