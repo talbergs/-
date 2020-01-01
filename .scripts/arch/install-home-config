@@ -1,0 +1,10 @@
+#!/bin/bash
+# @dotfile 
+rm -fr /home/$USER/.config
+rm -fr /home/$USER/.progs
+rm -fr /home/$USER/.scripts
+
+git clone --depth 1 https://github.com/talbergs/- /tmp/life
+chown -R $USER:users /tmp/life
+rsync -av $_/ /home/$USER/
+rm -rf $_/.git
