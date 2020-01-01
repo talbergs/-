@@ -8,7 +8,6 @@ set $lock ~/.scripts/sway/lock
 set $power ~/.config/rofi/modi/power
 set $wifi ~/.config/rofi/modi/nmcli
 set $menu rofi -show drun
-set $screenshot ~/.scripts/sway/screenshot --edit
 set $screenclip ~/.scripts/sway/screenshot --select --edit
 
 # colors {{{2
@@ -79,8 +78,7 @@ input * {
 
 # Shortcuts {{{1
 bindsym $mod+Return exec $term
-bindsym $mod+F11 exec $screenshot
-bindsym $mod+Shift+F11 exec $screenclip
+bindsym $mod+F11 exec $screenclip
 bindsym $mod+d exec $menu
 
 bindsym $mod+Shift+q kill

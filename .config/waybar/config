@@ -6,7 +6,7 @@
 
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["tray", "custom/mail", "custom/storage", "pulseaudio", "network", "battery", "custom/keyboard", "clock"],
+    "modules-right": ["tray", "pulseaudio", "network", "battery", "custom/keyboard", "clock"],
     "sway/mode": {
         "format": " {}"
     },
@@ -43,7 +43,6 @@
         "format-alt-click": "click-right",
         "format-icons": {
             "wifi": [""],
-            "ethernet": [""],
             "disconnected": ["X"]
         },
         "on-click": "termite -e nmtui",

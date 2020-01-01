@@ -12,7 +12,10 @@ for output in $(swaymsg -t get_outputs | jq -r '.[] .name'); do
   grim -o $output $image
 done
 
-corrupter -mag 1 -boffset 1 ${images[@]} ${images[@]}
+for image in ${images[@]}; do
+  corrupter -mag 1 -boffset 1 $image $image
+done
 
 swaylock ${swaylock_args[@]} -s center
+
 rm ${images[@]}
