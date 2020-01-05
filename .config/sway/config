@@ -70,15 +70,11 @@ input * {
     # additional escape
     xkb_options caps:escape
     tap enabled
-    # natural_scroll enabled
+    natural_scroll enabled
     scroll_method two_finger
     # disable while typing
     dwt enabled
 }
-
-exec_always bash -c '[ $USER == "mt" ] && swaymsg "input * natural_scroll disabled" || swaymsg "input * natural_scroll enabled"'
-exec_always bash -c '[ $USER == "mt" ] && swaymsg "output DP-2 pos 1920 0;output DP-1 pos 0 0"'
-
 
 # Shortcuts {{{1
 bindsym $mod+Return exec $term
@@ -221,6 +217,11 @@ mode "$mode_system" {
 }
 bindsym $mod+Shift+Return mode "$mode_system"
 # @dotdoc-keybindings `mod+F12` to cycle through available keyboard layouts.
+
+ # <Shift_R>+<Shift_L>
+bindcode Shift+50 exec keyboard-layout next; pkill -SIGRTMIN+8 waybar
+ # <Shift_L>+<Shift_R>
+bindcode Shift+62 exec keyboard-layout next; pkill -SIGRTMIN+8 waybar
 bindsym $mod+F12 exec keyboard-layout next; pkill -SIGRTMIN+8 waybar
 
 exec_always ~/.config/waybar/waybar.sh

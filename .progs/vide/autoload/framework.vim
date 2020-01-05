@@ -8,8 +8,6 @@ fun framework#ftguess()
 
   if l:line =~# '<?php'
     setf php
-  elsei l:line =~# '^commit'
-    setf gitcommit
   elsei l:line =~# '^diff'
     setf diff
   elsei l:line =~# '^#!/bin/bash'

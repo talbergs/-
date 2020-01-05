@@ -35,11 +35,6 @@ if test -d ~/.scripts
   set -pgx PATH (du $HOME/.scripts | cut -f2)
 end
 
-# Ruby gems (sass v 3.4.22)
-if test -d ~/.gem/ruby/2.6.0/bin
-  set -pgx PATH $HOME/.gem/ruby/2.6.0/bin
-end
-
 # Dev-box binaries
 if test -d ~/.zbx-box/bin
   set -pgx PATH $HOME/.zbx-box/bin
