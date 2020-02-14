@@ -46,6 +46,9 @@ se rtp+=$VIMRUNTIME/github/tpope/vim-surround
 se rtp+=$VIMRUNTIME/github/tpope/vim-abolish
 se rtp+=$VIMRUNTIME/github/tpope/vim-repeat
 
+" {{{2 git
+se rtp+=$VIMRUNTIME/github/rhysd/git-messenger.vim
+
 " {{{2 Mundo
 " requires python3
 se rtp+=$VIMRUNTIME/github/simnalamburt/vim-mundo

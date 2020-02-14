@@ -35,6 +35,7 @@ aug ftdetect
   au BufNewFile,BufRead .vimrc   setf vim
   au BufNewFile,BufRead COMMIT_EDITMSG   setf gitcommit
   au BufNewFile,BufRead git-rebase*   setf gitrebase
+  au BufNewFile,BufRead Dockerfile   setf Dockerfile
 
   " guess ft when reading from stdin
   au VimEnter,BufRead   *        call framework#ftguess()
