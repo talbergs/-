@@ -8,7 +8,7 @@ set $lock ~/.scripts/sway/lock
 set $power ~/.config/rofi/modi/power
 set $wifi ~/.config/rofi/modi/nmcli
 set $menu rofi -show drun
-set $screenclip ~/.scripts/sway/screenshot --select --edit
+set $screenclip ~/.scripts/sway/screenshot --select --clip
 
 # colors {{{2
 set $cl_high #009ddc

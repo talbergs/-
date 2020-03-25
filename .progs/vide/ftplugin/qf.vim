@@ -16,3 +16,5 @@ hi def link qfFileName  Directory
 hi def link qfLineNr    LineNr
 hi def link qfError     Error
 
+" delete current QF listing by "dd" command
+nnoremap <buffer> <silent> dd <Cmd>call setqflist(filter(getqflist(), {idx -> idx != line('.') - 1}), 'r') <Bar> cc<CR>

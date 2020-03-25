@@ -30,7 +30,7 @@ image=$dir/$name.png
 )
 
 [ ! -z $_clip ] && (
-    pinta $image
+    wl-copy < $image
 )
 
 [ ! -z $_edit ] && (

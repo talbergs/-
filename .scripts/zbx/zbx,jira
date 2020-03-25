@@ -1,3 +1,0 @@
-#!/bin/bash
-
-$BROWSER "$(zbx.resolve --jira-url)"
