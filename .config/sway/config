@@ -9,6 +9,7 @@ set $power ~/.config/rofi/modi/power
 set $wifi ~/.config/rofi/modi/nmcli
 set $menu rofi -show drun
 set $screenclip ~/.scripts/sway/screenshot --select --clip
+set $screenrec ~/.scripts/sway/screenrec
 
 # colors {{{2
 set $cl_high #009ddc
@@ -79,6 +80,7 @@ input * {
 # Shortcuts {{{1
 bindsym $mod+Return exec $term
 bindsym $mod+F11 exec $screenclip
+bindsym $mod+Shift+F11 exec $screenrec
 bindsym $mod+d exec $menu
 
 bindsym $mod+Shift+q kill

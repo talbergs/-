@@ -1,0 +1,43 @@
+#!/bin/bash
+# @dotfile
+# @dotdep slurp wf-recorder
+
+pidf=/tmp/$(basename $0).pid
+
+if [ $1 == --waybar ];then
+	if [ -e $pidf ]; then
+    	echo '{ "text": "•" }'
+	else
+    	echo '{ "text": "" }'
+	fi
+
+	exit 0
+fi
+
+if [ -e $pidf ]; then
+	kill -SIGINT $(sed -n '1p' $pidf)
+	name=$(sed -n '2p' $pidf)
+	rm $pidf
+
+	pkill -SIGRTMIN+9 waybar
+	wl-copy < $name
+	notify-send "Rec: $name"
+else
+	touch $pidf
+	pkill -SIGRTMIN+9 waybar
+	sel="$(slurp)"
+
+	if [ $? -ne "0" ];then
+		rm $pidf
+		pkill -SIGRTMIN+9 waybar
+		exit 0
+	fi
+
+	dir=~/Videos/screenrec
+	mkdir -p $dir 2> /dev/null
+	name="$dir/$(date +"%Y-%m-%d_%H-%M-%S").mp4"
+
+	wf-recorder -g "$sel" -f $name &
+	echo $! > $pidf
+	echo $name >> $pidf
+fi

@@ -6,7 +6,7 @@
 
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["tray", "pulseaudio", "network", "battery", "custom/keyboard", "clock"],
+    "modules-right": ["custom/screenrec", "tray", "pulseaudio", "network", "battery", "custom/keyboard", "clock"],
     "sway/mode": {
         "format": " {}"
     },
@@ -76,6 +76,14 @@
         "on-click": "keyboard-layout next; pkill -SIGRTMIN+8 waybar",
         "interval": "once",
         "signal": 8,
+        "tooltip": false
+    },
+    "custom/screenrec": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "screenrec --waybar",
+        "interval": "once",
+        "signal": 9,
         "tooltip": false
     },
     "tray": {

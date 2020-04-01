@@ -78,3 +78,18 @@ window#waybar.solo {
 #custom-keyboard.lv {
     color:      rgba(255, 210, 4, 1);
 }
+
+#custom-screenrec {
+    color:      rgba(238, 46, 36, 1);
+    animation-name: blink-screenrec;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink-screenrec {
+    to {
+    	color: rgba(238, 46, 36, 0);
+    }
+}
